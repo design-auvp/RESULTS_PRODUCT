@@ -134,11 +134,16 @@
         }
         .toast-enter { animation: toastIn 0.25s ease-out forwards; }
         .toast-exit  { animation: toastOut 0.25s ease-in forwards; }
+
+        /* --- Telão: sem scroll acima de xl (1280px) --- */
+        @media (min-width: 1280px) {
+            body { overflow: hidden; }
+        }
     </style>
 </head>
 <body class="selection:bg-amber-500/30 text-[#451a03]">
 
-    <div id="app" class="min-h-screen flex justify-center p-0 md:p-8 pb-10 md:pb-0">
+    <div id="app" class="min-h-screen flex justify-center p-0 md:p-8 pb-10 md:pb-0 xl:p-0 xl:h-screen xl:overflow-hidden xl:items-stretch">
         <!-- O conteúdo será injetado pelo JS -->
     </div>
 
@@ -316,7 +321,7 @@
 
         function renderCatImage(state, isCuredFlag, isError) {
             // Adicionado z-10 e hover:z-50 no container para que a imagem sobreponha o resto
-            let containerClasses = "relative w-full max-w-[260px] sm:max-w-[320px] md:max-w-[450px] lg:max-w-[500px] aspect-square mx-auto flex items-center justify-center z-10 hover:z-50";
+            let containerClasses = "relative w-full max-w-[260px] sm:max-w-[320px] md:max-w-[450px] lg:max-w-[500px] xl:max-w-[600px] aspect-square mx-auto flex items-center justify-center z-10 hover:z-50";
             
             if (isError) {
                 return `
@@ -361,15 +366,12 @@
                 document.body.classList.add('bg-final');
                 container.innerHTML = `
                 <div class="flex items-center justify-center min-h-screen w-full px-2 sm:px-4 animate-fadeIn">
-                    <div class="max-w-xl w-full bg-[#fdf6e3] p-6 sm:p-10 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] border-4 border-[#8b5a2b] text-center relative overflow-hidden">
+                    <div class="max-w-xl xl:max-w-4xl w-full bg-[#fdf6e3] p-6 sm:p-10 xl:p-16 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] border-4 border-[#8b5a2b] text-center relative overflow-hidden xl:flex xl:items-center xl:gap-16">
                         <div class="absolute inset-0 opacity-[0.04] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIi8+CjxwYXRoIGQ9Ik0xLDFoMnYyaC0yeiIgZmlsbD0iIzAwMCIvPgo8L3N2Zz4=')] mix-blend-multiply"></div>
-                        
-                        <h1 class="text-3xl sm:text-4xl font-bold text-[#451a03] mb-3 font-serif relative z-10">Clínica do Jorginho</h1>
-                        <p class="text-sm sm:text-base text-[#5c4033] mb-8 font-serif font-medium relative z-10">Iniciando escaneamento de diagnóstico corporativo...</p>
-                        
-                        <div class="relative w-64 h-64 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] mx-auto mb-10 bg-[#e5e5f7] rounded-lg shadow-inner border border-[#8b5a2b]/20 p-2 overflow-hidden z-10">
+
+                        <div class="relative w-64 h-64 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] xl:w-[520px] xl:h-[520px] xl:shrink-0 mx-auto xl:mx-0 mb-10 xl:mb-0 bg-[#e5e5f7] rounded-lg shadow-inner border border-[#8b5a2b]/20 p-2 overflow-hidden z-10">
                             <img src="${imgBase}ORIGINAL.png" alt="Gato Original" class="absolute inset-0 w-full h-full object-contain p-2" />
-                            
+
                             <div class="absolute inset-0 w-full h-full p-2 animate-scanline z-20 pointer-events-none">
                                 <div class="relative w-full h-full">
                                     <img src="${imgBase}RAIO%20X.png" alt="Raio X" class="w-full h-full object-contain drop-shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
@@ -378,21 +380,27 @@
                             </div>
                         </div>
 
-                        ${isLoading ? `
-                        <div class="relative z-10 w-full max-w-xs mx-auto mt-4 animate-fadeIn">
-                            <div class="flex justify-between text-[#8b5a2b] text-xs font-bold font-mono mb-2 uppercase tracking-widest">
-                                <span>Analisando...</span>
-                                <span id="progress-text">${loadProgress}%</span>
+                        <div class="xl:flex-1 xl:text-left relative z-10">
+                            <h1 class="text-3xl sm:text-4xl xl:text-6xl font-bold text-[#451a03] mb-3 font-serif">Clínica do Jorginho</h1>
+                            <p class="text-sm sm:text-base xl:text-xl text-[#5c4033] mb-8 font-serif font-medium">Iniciando escaneamento de diagnóstico corporativo...</p>
+
+                            ${isLoading ? `
+                            <div class="w-full max-w-xs xl:max-w-sm mx-auto xl:mx-0 mt-4 animate-fadeIn">
+                                <div class="flex justify-between text-[#8b5a2b] text-xs xl:text-sm font-bold font-mono mb-2 uppercase tracking-widest">
+                                    <span>Analisando...</span>
+                                    <span id="progress-text">${loadProgress}%</span>
+                                </div>
+                                <div class="w-full h-3 bg-[#e5e5f7] rounded-full overflow-hidden border border-[#8b5a2b]/20 shadow-inner">
+                                    <div id="progress-bar" class="h-full bg-gradient-to-r from-[#8b5a2b] to-[#5c4033] transition-all duration-200 ease-out" style="width: ${loadProgress}%"></div>
+                                </div>
                             </div>
-                            <div class="w-full h-3 bg-[#e5e5f7] rounded-full overflow-hidden border border-[#8b5a2b]/20 shadow-inner">
-                                <div id="progress-bar" class="h-full bg-gradient-to-r from-[#8b5a2b] to-[#5c4033] transition-all duration-200 ease-out" style="width: ${loadProgress}%"></div>
-                            </div>
+                            ` : `
+                            <button onclick="window.startApp()" class="bg-gradient-to-b from-[#8b5a2b] to-[#5c4033] border-2 border-[#3e2723] hover:from-[#a06932] text-white px-6 py-3 sm:px-8 sm:py-4 xl:px-12 xl:py-5 rounded-md font-bold flex items-center mx-auto xl:mx-0 space-x-2 shadow-xl hover:-translate-y-1 transition-transform tracking-widest uppercase text-sm sm:text-base xl:text-xl animate-fadeIn">
+                                <span>Iniciar Diagnóstico</span>
+                            </button>
+                            <p class="hidden xl:block mt-6 text-[#8b5a2b]/60 text-sm font-mono uppercase tracking-widest">Ou pressione <kbd class="bg-[#8b5a2b]/10 border border-[#8b5a2b]/30 rounded px-2 py-0.5">Space</kbd> para avançar</p>
+                            `}
                         </div>
-                        ` : `
-                        <button onclick="window.startApp()" class="relative z-10 bg-gradient-to-b from-[#8b5a2b] to-[#5c4033] border-2 border-[#3e2723] hover:from-[#a06932] text-white px-6 py-3 sm:px-8 sm:py-4 rounded-md font-bold flex items-center mx-auto space-x-2 shadow-xl hover:-translate-y-1 transition-transform tracking-widest uppercase text-sm sm:text-base animate-fadeIn">
-                            <span>Iniciar Diagnóstico</span>
-                        </button>
-                        `}
                     </div>
                 </div>`;
                 return;
@@ -403,20 +411,21 @@
                 document.body.classList.add('bg-final');
                 container.innerHTML = `
                 <div class="flex items-center justify-center min-h-screen w-full px-2 sm:px-4 animate-fadeIn">
-                    <div class="max-w-xl w-full bg-[#fdf6e3] p-6 sm:p-10 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] border-4 border-[#8b5a2b] text-center relative overflow-hidden">
+                    <div class="max-w-xl xl:max-w-4xl w-full bg-[#fdf6e3] p-6 sm:p-10 xl:p-16 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] border-4 border-[#8b5a2b] text-center relative overflow-hidden xl:flex xl:items-center xl:gap-16">
                         <div class="absolute inset-0 opacity-[0.04] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIi8+CjxwYXRoIGQ9Ik0xLDFoMnYyaC0yeiIgZmlsbD0iIzAwMCIvPgo8L3N2Zz4=')] mix-blend-multiply"></div>
-                        
-                        <div class="relative w-64 h-64 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] mx-auto flex items-center justify-center z-10 mb-4 hover:z-50">
+
+                        <div class="relative w-64 h-64 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] xl:w-[480px] xl:h-[480px] xl:shrink-0 mx-auto xl:mx-0 mb-4 xl:mb-0 flex items-center justify-center z-10 hover:z-50">
                             <div class="absolute inset-0 bg-amber-500/20 rounded-full blur-2xl"></div>
-                            <img src="${imgBase}ORIGINAL.png" alt="Gato Original" class="w-full h-full object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.4)] relative z-10 transition-transform duration-500 hover:scale-[1.25] origin-center" />
+                            <div class="w-full h-full animate-happy drop-shadow-[0_20px_30px_rgba(0,0,0,0.4)] relative z-10 transition-transform duration-500 hover:scale-[1.25] origin-center"></div>
                         </div>
-                        
-                        <h1 class="text-3xl font-bold text-[#451a03] mb-4 relative z-10">Alta Médica!</h1>
-                        <p class="text-sm sm:text-base text-[#5c4033] mb-8 font-serif font-medium relative z-10">O Jorginho está completamente recuperado e o seu negócio está em equilíbrio total. Parabéns, Doutor!</p>
-                        
-                        <button onclick="window.reboot()" class="relative z-10 bg-gradient-to-b from-[#8b5a2b] to-[#5c4033] border-2 border-[#3e2723] hover:from-[#a06932] text-white px-6 py-3 sm:px-8 sm:py-3 rounded-md font-bold flex items-center mx-auto space-x-2 shadow-lg uppercase tracking-wider text-sm sm:text-base">
-                            ${icons.reset} <span>Nova Avaliação</span>
-                        </button>
+
+                        <div class="xl:flex-1 xl:text-left relative z-10">
+                            <h1 class="text-3xl xl:text-6xl font-bold text-[#451a03] mb-4">Alta Médica!</h1>
+                            <p class="text-sm sm:text-base xl:text-xl text-[#5c4033] mb-8 font-serif font-medium">O Jorginho está completamente recuperado e o seu negócio está em equilíbrio total. Parabéns, Doutor!</p>
+                            <button onclick="window.reboot()" class="bg-gradient-to-b from-[#8b5a2b] to-[#5c4033] border-2 border-[#3e2723] hover:from-[#a06932] text-white px-6 py-3 sm:px-8 sm:py-3 xl:px-12 xl:py-5 rounded-md font-bold flex items-center mx-auto xl:mx-0 space-x-2 shadow-lg uppercase tracking-wider text-sm sm:text-base xl:text-xl">
+                                ${icons.reset} <span>Nova Avaliação</span>
+                            </button>
+                        </div>
                     </div>
                 </div>`;
                 return;
@@ -442,26 +451,26 @@
                     <div class="w-full h-full bg-[#fcfcfc] rounded-md shadow-[0_6px_15px_rgba(0,0,0,0.4)] border border-[#cbd5e1] relative flex flex-col overflow-hidden transition-all duration-300 ${!isDisabled ? 'group-hover:shadow-[0_12px_25px_rgba(0,0,0,0.5)]' : ''}">
                         
                         <!-- Cabeçalho da Receita -->
-                        <div class="h-8 bg-blue-900 w-full flex items-center px-4 justify-between shrink-0">
-                            <span class="text-white text-xs font-bold tracking-widest uppercase">Receituário</span>
-                            <span class="text-blue-200 text-xs font-serif italic">Clínica AUVP</span>
+                        <div class="h-8 xl:h-12 bg-blue-900 w-full flex items-center px-4 xl:px-6 justify-between shrink-0">
+                            <span class="text-white text-xs xl:text-sm font-bold tracking-widest uppercase">Receituário</span>
+                            <span class="text-blue-200 text-xs xl:text-sm font-serif italic">Clínica AUVP</span>
                         </div>
                         
                         <!-- Corpo pautado com Letra de Médico e Efeito de Escrita -->
-                        <div class="p-5 sm:p-6 flex-grow flex flex-col relative bg-[linear-gradient(transparent_95%,_#e5e7eb_95%)] bg-[length:100%_2.5rem] min-h-[180px]">
-                            
-                            <div class="text-blue-900 font-serif text-2xl font-bold opacity-30 absolute top-4 left-4 pointer-events-none">Rx</div>
-                            
+                        <div class="p-5 sm:p-6 xl:p-8 flex-grow flex flex-col relative bg-[linear-gradient(transparent_95%,_#e5e7eb_95%)] bg-[length:100%_2.5rem] xl:bg-[length:100%_4rem] min-h-[180px] xl:min-h-[220px]">
+
+                            <div class="text-blue-900 font-serif text-2xl xl:text-5xl font-bold opacity-30 absolute top-4 left-4 xl:top-6 xl:left-6 pointer-events-none">Rx</div>
+
                             <!-- Texto Animado com Delay em cascata para cada receita -->
-                            <p class="font-handwriting text-2xl sm:text-3xl leading-[2.5rem] mt-6 flex-grow z-10 px-2 ${!isDisabled ? 'animate-write' : 'text-blue-800'}" ${!isDisabled ? `style="animation-delay: ${0.2 + (i * 0.15)}s;"` : ''}>
+                            <p class="font-handwriting text-2xl sm:text-3xl xl:text-5xl leading-[2.5rem] xl:leading-[4rem] mt-6 xl:mt-8 flex-grow z-10 px-2 ${!isDisabled ? 'animate-write' : 'text-blue-800'}" ${!isDisabled ? `style="animation-delay: ${0.2 + (i * 0.15)}s;"` : ''}>
                                 ${opt.text.replace('💊 ', '')}
                             </p>
-                            
+
                             <!-- Carimbo Médico ao selecionar -->
                             ${isSel ? `
                             <div class="absolute bottom-4 right-4 z-30 transform -rotate-12 animate-[fadeIn_0.3s_ease-out]">
-                                <div class="border-4 ${opt.type === 'correct' ? 'border-green-600 text-green-600' : 'border-red-600 text-red-600'} rounded-lg px-3 py-1 bg-white/90 shadow-sm backdrop-blur-sm">
-                                    <span class="font-bold uppercase tracking-widest text-sm md:text-base opacity-90">
+                                <div class="border-4 ${opt.type === 'correct' ? 'border-green-600 text-green-600' : 'border-red-600 text-red-600'} rounded-lg px-3 py-1 xl:px-5 xl:py-2 bg-white/90 shadow-sm backdrop-blur-sm">
+                                    <span class="font-bold uppercase tracking-widest text-sm md:text-base xl:text-xl opacity-90">
                                         ${opt.type === 'correct' ? 'APROVADO' : 'RECUSADO'}
                                     </span>
                                 </div>
@@ -473,33 +482,44 @@
             }).join('');
 
             container.innerHTML = `
-            <div class="max-w-5xl w-full flex flex-col space-y-8 animate-fadeIn px-0 sm:px-2 md:px-0">
-                
+            <div class="max-w-5xl xl:max-w-none w-full flex flex-col space-y-8 xl:space-y-3 animate-fadeIn px-0 sm:px-2 md:px-0 xl:px-8 xl:h-full xl:justify-between">
+
+                <!-- Indicador de Progresso (Telão only) -->
+                <div class="hidden xl:flex items-center justify-between py-1">
+                    <div class="flex gap-3 items-center">
+                        ${scenarios.map((_, i) => `<div class="transition-all duration-300 rounded-full ${i < currentStep ? 'w-3 h-3 bg-[#8b5a2b]' : i === currentStep ? 'w-4 h-4 bg-[#fdf6e3] shadow-[0_0_8px_rgba(253,246,227,0.6)]' : 'w-3 h-3 bg-[#fdf6e3]/25 border border-[#fdf6e3]/30'}"></div>`).join('')}
+                    </div>
+                    <span class="text-[#fdf6e3]/60 text-sm font-mono uppercase tracking-widest">Cenário ${currentStep + 1} / ${scenarios.length}</span>
+                    <button onclick="document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()" class="text-[#fdf6e3]/40 hover:text-[#fdf6e3]/80 transition-colors p-1 rounded" title="Fullscreen (F)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                    </button>
+                </div>
+
                 <!-- Prancheta Médica / Prontuário Lado a Lado -->
-                <div class="bg-[#fdf6e3] rounded-b-xl sm:rounded-b-3xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] border-x border-b border-[#e6d5a1] relative transition-transform ${glitchError ? 'animate-shake' : ''} z-20">
+                <div class="bg-[#fdf6e3] rounded-b-xl sm:rounded-b-3xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] border-x border-b border-[#e6d5a1] relative transition-transform ${glitchError ? 'animate-shake' : ''} z-20 xl:flex-1 xl:min-h-0">
                     <div class="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIi8+CjxwYXRoIGQ9Ik0xLDFoMnYyaC0yeiIgZmlsbD0iIzAwMCIvPgo8L3N2Zz4=')] mix-blend-multiply rounded-b-3xl"></div>
-                    
+
                     <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-32 sm:w-40 h-8 sm:h-10 bg-gradient-to-b from-[#cbd5e1] to-[#94a3b8] border-b border-x border-[#64748b] rounded-b-xl shadow-lg flex items-center justify-center z-20">
                         <div class="w-24 h-1.5 sm:h-2 bg-[#475569] shadow-inner rounded-full"></div>
                     </div>
 
-                    <div class="p-4 sm:p-6 md:p-10 pt-12 md:pt-16 relative z-10 flex flex-col md:flex-row items-center md:items-stretch gap-6 md:gap-10">
-                        
+                    <div class="p-4 sm:p-6 md:p-10 xl:p-10 pt-12 md:pt-16 xl:pt-14 relative z-10 flex flex-col md:flex-row items-center md:items-stretch gap-6 md:gap-10 xl:gap-12 xl:h-full">
+
                         <!-- Lado Esquerdo: Imagem do Jorginho Grande -->
-                        <div class="w-full md:w-1/2 flex items-center justify-center relative min-h-[250px] sm:min-h-[300px] md:min-h-[350px]">
+                        <div class="w-full md:w-1/2 flex items-center justify-center relative min-h-[250px] sm:min-h-[300px] md:min-h-[350px] xl:min-h-0">
                             ${renderCatImage(s.visualState, isCured, glitchError)}
                         </div>
                         
                         <!-- Lado Direito: O Prontuário Médico -->
-                        <div class="w-full md:w-1/2 bg-white/60 p-4 sm:p-6 md:p-8 rounded-sm border-2 border-[#8b5a2b]/20 shadow-inner flex flex-col justify-between relative z-0">
-                            
+                        <div class="w-full md:w-1/2 bg-white/60 p-4 sm:p-6 md:p-8 xl:p-10 rounded-sm border-2 border-[#8b5a2b]/20 shadow-inner flex flex-col justify-between relative z-0">
+
                             <div class="border-b-2 border-[#8b5a2b]/30 pb-3 md:pb-4 mb-4 md:mb-6 flex flex-col items-center">
-                                <h2 class="text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-widest text-[#451a03] font-serif text-center">Prontuário</h2>
-                                <span class="bg-[#8b5a2b]/10 px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold text-[#8b5a2b] mt-2 font-mono">Ficha: 0${currentStep + 1} | REF: AUVP-${s.id}</span>
+                                <h2 class="text-xl sm:text-2xl md:text-3xl xl:text-5xl font-bold uppercase tracking-widest text-[#451a03] font-serif text-center">Prontuário</h2>
+                                <span class="bg-[#8b5a2b]/10 px-3 py-1 rounded-full text-[10px] sm:text-xs xl:text-sm font-bold text-[#8b5a2b] mt-2 font-mono">Ficha: 0${currentStep + 1} | REF: AUVP-${s.id}</span>
                             </div>
 
                             ${!isCured ? `
-                            <div class="font-mono text-[#451a03] space-y-3 sm:space-y-4 flex-grow flex flex-col text-xs sm:text-sm">
+                            <div class="font-mono text-[#451a03] space-y-3 sm:space-y-4 xl:space-y-5 flex-grow flex flex-col text-xs sm:text-sm xl:text-base">
                                 <div class="flex justify-between border-b border-[#8b5a2b]/10 pb-2">
                                     <span class="font-bold">Paciente:</span> <span>Jorginho</span>
                                 </div>
@@ -507,32 +527,32 @@
                                     <span class="font-bold">Espécie:</span> <span>Felis Corporativus</span>
                                 </div>
                                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-[#8b5a2b]/10 pb-2 gap-2">
-                                    <span class="font-bold">Setor Clínico:</span> 
+                                    <span class="font-bold">Setor Clínico:</span>
                                     <span class="uppercase flex items-center gap-2 font-bold bg-[#8b5a2b]/10 px-2 py-0.5 rounded">${s.icon} ${s.department}</span>
                                 </div>
-                                
-                                <div class="mt-4 sm:mt-6 bg-[#8b5a2b]/5 p-3 sm:p-4 rounded border border-[#8b5a2b]/10 relative flex-grow shadow-inner">
-                                    <span class="absolute -top-3 left-3 bg-[#fdf6e3] px-2 font-bold text-red-600 text-[10px] sm:text-xs animate-pulse border border-red-200 rounded-sm">URGENTE: SINTOMAS</span>
-                                    <p class="leading-relaxed mt-2 italic text-[#5c4033] font-sans font-medium">
+
+                                <div class="mt-4 sm:mt-6 bg-[#8b5a2b]/5 p-3 sm:p-4 xl:p-6 rounded border border-[#8b5a2b]/10 relative flex-grow shadow-inner">
+                                    <span class="absolute -top-3 left-3 bg-[#fdf6e3] px-2 font-bold text-red-600 text-[10px] sm:text-xs xl:text-sm animate-pulse border border-red-200 rounded-sm">URGENTE: SINTOMAS</span>
+                                    <p class="leading-relaxed mt-2 italic text-[#5c4033] font-sans font-medium xl:text-xl xl:leading-relaxed">
                                         "${s.symptom}"
                                     </p>
                                 </div>
-                                
-                                <div class="mt-2 pt-2 text-center text-[10px] sm:text-xs text-[#8b5a2b] font-bold opacity-80 uppercase tracking-widest">
+
+                                <div class="mt-2 pt-2 text-center text-[10px] sm:text-xs xl:text-sm text-[#8b5a2b] font-bold opacity-80 uppercase tracking-widest">
                                     [ Aguardando prescrição ]
                                 </div>
                             </div>
                             ` : `
                             <div class="font-sans text-[#451a03] flex-grow flex flex-col justify-center animate-fadeIn">
                                 <div class="mb-4 sm:mb-6 text-center">
-                                    <span class="inline-block bg-green-100 text-green-800 text-[10px] sm:text-xs px-2 py-1 rounded font-bold uppercase tracking-widest mb-2 border border-green-300 shadow-sm">Tratamento Bem-Sucedido</span>
-                                    <h3 class="text-lg sm:text-xl md:text-2xl font-bold uppercase tracking-tighter text-[#8b5a2b] font-serif">${s.department}</h3>
+                                    <span class="inline-block bg-green-100 text-green-800 text-[10px] sm:text-xs xl:text-sm px-2 py-1 rounded font-bold uppercase tracking-widest mb-2 border border-green-300 shadow-sm">Tratamento Bem-Sucedido</span>
+                                    <h3 class="text-lg sm:text-xl md:text-2xl xl:text-3xl font-bold uppercase tracking-tighter text-[#8b5a2b] font-serif">${s.department}</h3>
                                 </div>
-                                
-                                <p class="text-sm sm:text-base leading-relaxed mb-4 sm:mb-6 border-l-4 border-[#8b5a2b] pl-4 text-[#5c4033] font-serif">${s.explanation}</p>
-                                
-                                <div class="bg-black/5 p-3 sm:p-4 rounded-md italic text-[#5c4033] border border-[#8b5a2b]/10 shadow-inner text-xs sm:text-sm mt-auto">
-                                    <strong class="uppercase text-[#b45309] text-[10px] sm:text-xs tracking-widest block mb-1 sm:mb-2 font-sans not-italic">No Mundo Real:</strong> 
+
+                                <p class="text-sm sm:text-base xl:text-lg leading-relaxed mb-4 sm:mb-6 border-l-4 border-[#8b5a2b] pl-4 text-[#5c4033] font-serif">${s.explanation}</p>
+
+                                <div class="bg-black/5 p-3 sm:p-4 xl:p-6 rounded-md italic text-[#5c4033] border border-[#8b5a2b]/10 shadow-inner text-xs sm:text-sm xl:text-base mt-auto">
+                                    <strong class="uppercase text-[#b45309] text-[10px] sm:text-xs xl:text-sm tracking-widest block mb-1 sm:mb-2 font-sans not-italic">No Mundo Real:</strong>
                                     "${s.realWorld}"
                                 </div>
                             </div>
@@ -543,8 +563,8 @@
 
                 <!-- Receituário Médico (Oculto se Curado) -->
                 ${!isCured ? `
-                <div class="pt-2 pb-12 overflow-hidden z-10 relative">
-                    <h3 class="text-center text-[#fdf6e3] font-bold uppercase tracking-widest text-sm md:text-lg mb-2 sm:mb-4 drop-shadow-md px-4">Selecione a Prescrição</h3>
+                <div class="pt-2 pb-12 xl:pb-4 xl:pt-3 overflow-hidden z-10 relative xl:flex xl:flex-col">
+                    <h3 class="text-center text-[#fdf6e3] font-bold uppercase tracking-widest text-sm md:text-lg xl:text-2xl mb-2 sm:mb-4 xl:mb-3 drop-shadow-md px-4">Selecione a Prescrição</h3>
                     <div class="md:hidden flex items-center justify-center gap-3 mb-3">
                         <span class="swipe-arrow-left text-[#e6d5a1]">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-4 h-4"><polyline points="15 18 9 12 15 6"/></svg>
@@ -554,7 +574,7 @@
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-4 h-4"><polyline points="9 18 15 12 9 6"/></svg>
                         </span>
                     </div>
-                    <div id="recipe-carousel" class="flex overflow-x-auto md:grid md:grid-cols-3 gap-4 md:gap-6 hide-scrollbar snap-x snap-mandatory px-4 sm:px-6 md:px-2 pt-4 pb-8 -mx-4 md:mx-0">
+                    <div id="recipe-carousel" class="flex overflow-x-auto md:grid md:grid-cols-3 gap-4 md:gap-6 xl:gap-8 hide-scrollbar snap-x snap-mandatory px-4 sm:px-6 md:px-2 xl:px-0 pt-4 pb-8 xl:pb-2 -mx-4 md:mx-0 xl:flex-1">
                         ${optionsHTML}
                     </div>
                     <div class="md:hidden flex items-center justify-center gap-2 mt-1 pb-2" id="carousel-dots">
@@ -562,12 +582,20 @@
                         <div class="scroll-dot inactive"></div>
                         <div class="scroll-dot inactive"></div>
                     </div>
+                    <p class="hidden xl:block text-center text-[#fdf6e3]/30 text-xs font-mono uppercase tracking-widest mt-2 pb-1">
+                        Teclas <kbd class="bg-[#fdf6e3]/10 border border-[#fdf6e3]/20 rounded px-1.5 py-0.5">1</kbd>
+                        <kbd class="bg-[#fdf6e3]/10 border border-[#fdf6e3]/20 rounded px-1.5 py-0.5">2</kbd>
+                        <kbd class="bg-[#fdf6e3]/10 border border-[#fdf6e3]/20 rounded px-1.5 py-0.5">3</kbd> para selecionar
+                    </p>
                 </div>` : `
                 <!-- Botão de Próximo Passo -->
-                <div class="flex justify-center pt-2 pb-10 sm:pb-12 animate-fadeIn px-4 z-10 relative">
-                    <button onclick="window.next()" class="w-full sm:w-auto px-8 sm:px-12 bg-gradient-to-b from-[#8b5a2b] to-[#5c4033] hover:from-[#a06932] border-2 border-[#3e2723] text-white py-3 sm:py-4 rounded-md font-bold flex items-center justify-center space-x-2 shadow-[0_10px_20px_rgba(0,0,0,0.5),inset_0_2px_5px_rgba(255,255,255,0.3)] uppercase tracking-widest transition-transform hover:-translate-y-1 active:translate-y-1 text-sm sm:text-base">
-                        <span>${currentStep < scenarios.length - 1 ? 'Próximo Diagnóstico' : 'Finalizar Expediente'}</span> ${icons.arrow}
-                    </button>
+                <div class="flex justify-center pt-2 pb-10 sm:pb-12 xl:pb-4 animate-fadeIn px-4 z-10 relative">
+                    <div class="flex flex-col items-center gap-3">
+                        <button onclick="window.next()" class="w-full sm:w-auto px-8 sm:px-12 xl:px-16 bg-gradient-to-b from-[#8b5a2b] to-[#5c4033] hover:from-[#a06932] border-2 border-[#3e2723] text-white py-3 sm:py-4 xl:py-5 rounded-md font-bold flex items-center justify-center space-x-2 shadow-[0_10px_20px_rgba(0,0,0,0.5),inset_0_2px_5px_rgba(255,255,255,0.3)] uppercase tracking-widest transition-transform hover:-translate-y-1 active:translate-y-1 text-sm sm:text-base xl:text-xl">
+                            <span>${currentStep < scenarios.length - 1 ? 'Próximo Diagnóstico' : 'Finalizar Expediente'}</span> ${icons.arrow}
+                        </button>
+                        <p class="hidden xl:block text-[#fdf6e3]/30 text-xs font-mono uppercase tracking-widest">ou pressione <kbd class="bg-[#fdf6e3]/10 border border-[#fdf6e3]/20 rounded px-1.5 py-0.5">Space</kbd></p>
+                    </div>
                 </div>
                 `}
             </div>`;
@@ -662,10 +690,63 @@
             renderApp();
         };
 
+        // --- Teclado: navegação para apresentador (telão) ---
+        document.addEventListener('keydown', (e) => {
+            if (isLoading) return;
+
+            // Avançar: Space, Enter, ArrowRight
+            if (['Space', 'Enter', 'ArrowRight'].includes(e.code)) {
+                e.preventDefault();
+                if (isIntro) window.startApp();
+                else if (flowComplete) window.reboot();
+                else if (isCured) window.next();
+                return;
+            }
+
+            // Selecionar prescrição: 1/2/3 (posição visual no carrossel)
+            if (!isCured && !isIntro && !flowComplete && selectedOptionId === null) {
+                const keyMap = { 'Digit1': 0, 'Digit2': 1, 'Digit3': 2 };
+                const idx = keyMap[e.code];
+                if (idx !== undefined && currentShuffledOptions[idx]) {
+                    window.select(currentShuffledOptions[idx].id);
+                }
+            }
+
+            // Fullscreen: F
+            if (e.code === 'KeyF') {
+                if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
+                else document.exitFullscreen();
+            }
+        });
+
+        // --- Botão Fullscreen (fixo, visível apenas em xl) ---
+        (function injectFullscreenButton() {
+            const btn = document.createElement('button');
+            btn.id = 'fs-btn';
+            btn.tabIndex = -1;
+            btn.title = 'Tela Cheia (F)';
+            btn.className = 'hidden xl:flex fixed top-3 right-4 z-[200] items-center gap-2 bg-[#2e1e14]/70 hover:bg-[#2e1e14] backdrop-blur-sm text-[#fdf6e3]/60 hover:text-[#fdf6e3] px-3 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest shadow-lg transition-all border border-[#fdf6e3]/10';
+            btn.innerHTML = `
+                <svg id="fs-icon-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-3.5 h-3.5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                <svg id="fs-icon-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-3.5 h-3.5 hidden"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>
+                <span id="fs-label">Tela Cheia</span>`;
+            btn.addEventListener('click', () => {
+                if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
+                else document.exitFullscreen();
+            });
+            document.addEventListener('fullscreenchange', () => {
+                const isFs = !!document.fullscreenElement;
+                document.getElementById('fs-icon-enter').classList.toggle('hidden', isFs);
+                document.getElementById('fs-icon-exit').classList.toggle('hidden', !isFs);
+                document.getElementById('fs-label').textContent = isFs ? 'Sair' : 'Tela Cheia';
+            });
+            document.body.appendChild(btn);
+        })();
+
         // Inicia a aplicação
         currentShuffledOptions = shuffle(scenarios[currentStep].options);
         renderApp();
-        
+
         // Iniciar o pré-carregamento imediatamente após a primeira renderização
         preloadImages();
     </script>
