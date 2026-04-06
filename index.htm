@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clínica do Jorginho - Diagnóstico Corporativo</title>
+    <title>Clinica de Produto - Conheça nosso time!</title>
     
-    <!-- Google Fonts para a "Letra de Médico" -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap" rel="stylesheet">
@@ -24,17 +24,22 @@
                     keyframes: {
                         shake: {
                             '0%, 100%': { transform: 'translateX(0)' },
-                            '25%': { transform: 'translateX(-4px) rotate(-1deg)' },
-                            '75%': { transform: 'translateX(4px) rotate(1deg)' }
+                            '25%': { transform: 'translateX(-8px) rotate(-2deg)' },
+                            '75%': { transform: 'translateX(8px) rotate(2deg)' }
                         },
                         fadeIn: {
-                            from: { opacity: 0, transform: 'translateY(20px)' },
+                            from: { opacity: 0, transform: 'translateY(30px)' },
                             to: { opacity: 1, transform: 'translateY(0)' }
+                        },
+                        popIn: {
+                            from: { opacity: 0, transform: 'scale(0.9)' },
+                            to: { opacity: 1, transform: 'scale(1)' }
                         }
                     },
                     animation: {
-                        shake: 'shake 0.15s ease-in-out 3',
-                        fadeIn: 'fadeIn 0.8s ease-out forwards'
+                        shake: 'shake 0.2s ease-in-out 3',
+                        fadeIn: 'fadeIn 0.8s ease-out forwards',
+                        popIn: 'popIn 0.5s ease-out forwards'
                     }
                 }
             }
@@ -42,24 +47,19 @@
     </script>
 
     <style>
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        body {
-            background: linear-gradient(to bottom, #4a3022, #2e1e14), repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);
-            background-attachment: fixed;
+        /* Bloqueia qualquer scroll - Perfeito para apresentações num telão 1080p */
+        body, html {
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
-        }
-
-        .bg-final {
-            background: radial-gradient(circle at center, #5c4033 0%, #2e1e14 100%) !important;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            /* Fundo Verde Escuro */
+            background: radial-gradient(circle at center, #064e3b 0%, #022c22 100%);
+            user-select: none; /* Evita selecionar texto sem querer no palco */
         }
 
         /* --- Animações das Imagens do Jorginho --- */
-        
-        /* Scanner de Raio X */
         @keyframes scanline {
             0%, 100% { clip-path: inset(0 0 85% 0); }
             50% { clip-path: inset(85% 0 0 0); }
@@ -68,7 +68,6 @@
             animation: scanline 3s linear infinite;
         }
 
-        /* Loop de Sorriso (Original > Feliz 1 > Feliz 2) */
         @keyframes happyLoop {
             0%, 33% { background-image: url('https://raw.githubusercontent.com/design-auvp/RESULTS_PRODUCT/main/ORIGINAL.png'); }
             33.1%, 66% { background-image: url('https://raw.githubusercontent.com/design-auvp/RESULTS_PRODUCT/main/FELIZ%201.png'); }
@@ -92,210 +91,205 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-position: 100% 0;
-            animation: write-effect 1.2s ease-out forwards;
+            animation: write-effect 1.5s ease-out forwards;
         }
 
-        /* --- Setas de Deslize Animadas --- */
-        @keyframes bounceLeft {
-            0%, 100% { transform: translateX(0); opacity: 0.9; }
-            50% { transform: translateX(-5px); opacity: 0.4; }
+        /* Fundo Final Verde Escuro */
+        .bg-final {
+            background: radial-gradient(circle at center, #064e3b 0%, #022c22 100%) !important;
         }
-        @keyframes bounceRight {
-            0%, 100% { transform: translateX(0); opacity: 0.9; }
-            50% { transform: translateX(5px); opacity: 0.4; }
-        }
-        .swipe-arrow-left { animation: bounceLeft 1s ease-in-out infinite; }
-        .swipe-arrow-right { animation: bounceRight 1s ease-in-out infinite; }
 
-        /* --- Dots do Carrossel --- */
-        .scroll-dot {
-            height: 8px;
-            border-radius: 4px;
-            transition: all 0.35s ease;
+        /* Sombras profundas para o telão */
+        .stage-shadow {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
         }
-        .scroll-dot.active {
-            width: 22px;
+        .paper-texture {
             background-color: #fdf6e3;
+            position: relative;
         }
-        .scroll-dot.inactive {
-            width: 8px;
-            background-color: rgba(253, 246, 227, 0.3);
-            border: 1px solid rgba(253, 246, 227, 0.5);
-        }
-
-        /* --- Toast de Feedback --- */
-        @keyframes toastIn {
-            from { opacity: 0; transform: translate(-50%, 16px); }
-            to   { opacity: 1; transform: translate(-50%, 0); }
-        }
-        @keyframes toastOut {
-            from { opacity: 1; transform: translate(-50%, 0); }
-            to   { opacity: 0; transform: translate(-50%, 16px); }
-        }
-        .toast-enter { animation: toastIn 0.25s ease-out forwards; }
-        .toast-exit  { animation: toastOut 0.25s ease-in forwards; }
-
-        /* --- Telão: sem scroll acima de xl (1280px) --- */
-        @media (min-width: 1280px) {
-            body { overflow: hidden; }
+        .paper-texture::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            opacity: 0.04;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIi8+CjxwYXRoIGQ9Ik0xLDFoMnYyaC0yeiIgZmlsbD0iIzAwMCIvPgo8L3N2Zz4=');
+            mix-blend-mode: multiply;
+            pointer-events: none;
+            z-index: 0;
         }
     </style>
 </head>
-<body class="selection:bg-amber-500/30 text-[#451a03]">
+<body class="text-[#451a03]">
 
-    <div id="app" class="min-h-screen flex justify-center p-0 md:p-8 pb-10 md:pb-0 xl:p-0 xl:h-screen xl:overflow-hidden xl:items-stretch">
+    <div id="app" class="w-screen h-screen flex flex-col p-6 lg:p-10 relative">
         <!-- O conteúdo será injetado pelo JS -->
     </div>
 
     <script>
-        // --- Ícones SVG ---
-        const icons = {
-            design: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="m14 14-2-2m-2-2 2 2m0 0 2-2m-2 2-2 2"/></svg>`,
-            product: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`,
-            intelligence: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
-            strategy: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>`,
-            community: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
-            cx: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
-            arrow: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`,
-            reset: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`
-        };
-
         const imgBase = "https://raw.githubusercontent.com/design-auvp/RESULTS_PRODUCT/main/";
+
+        // --- Configuração de Áudio ---
+        const bgMusicUrl = 'https://raw.githubusercontent.com/design-auvp/RESULTS_PRODUCT/main/cat.mp3';
+        const sadSoundUrl = 'https://raw.githubusercontent.com/design-auvp/RESULTS_PRODUCT/main/46268990-funny-cat-meow-246012.mp3';
+        const randomSoundUrls = [
+            'https://raw.githubusercontent.com/design-auvp/RESULTS_PRODUCT/main/sound_garage-cat-meow-1-fx-306178.mp3',
+            'https://raw.githubusercontent.com/design-auvp/RESULTS_PRODUCT/main/sound_garage-cat-meow-11-fx-306193.mp3',
+            'https://raw.githubusercontent.com/design-auvp/RESULTS_PRODUCT/main/sound_garage-cat-meow-12-fx-306191.mp3',
+            'https://raw.githubusercontent.com/design-auvp/RESULTS_PRODUCT/main/sound_garage-cat-meow-7-fx-306186.mp3',
+            'https://raw.githubusercontent.com/design-auvp/RESULTS_PRODUCT/main/sound_garage-cat-meow-8-fx-306184.mp3'
+        ];
+
+        const bgMusic = new Audio(bgMusicUrl);
+        bgMusic.loop = true;
+        bgMusic.volume = 0.1; // Volume bem baixinho para não atrapalhar a palestra
+
+        const sadAudio = new Audio(sadSoundUrl);
+        const generalAudios = randomSoundUrls.map(url => new Audio(url));
+        let soundQueue = [];
+        let lastPlayedAudio = null;
+
+        function playSadSound() {
+            sadAudio.currentTime = 0;
+            sadAudio.play().catch(e => console.warn("Áudio bloqueado pelo navegador antes de interação."));
+        }
+
+        function playRandomSound() {
+            if (soundQueue.length === 0) {
+                // Reabastecer a fila embaralhada
+                let newQueue = shuffle([...generalAudios]);
+                // Evitar repetição imediata do último som tocado
+                if (newQueue[0] === lastPlayedAudio) {
+                    [newQueue[0], newQueue[1]] = [newQueue[1], newQueue[0]];
+                }
+                soundQueue = newQueue;
+            }
+            
+            const audioToPlay = soundQueue.shift();
+            lastPlayedAudio = audioToPlay;
+            audioToPlay.currentTime = 0;
+            audioToPlay.play().catch(e => console.warn("Áudio bloqueado pelo navegador antes de interação."));
+        }
 
         // --- Pré-carregamento de Imagens ---
         const imagesToPreload = [
-            'ORIGINAL.png',
-            'RAIO%20X.png',
-            'FELIZ%201.png',
-            'FELIZ%202.png',
-            'SUJO.png',
-            'MAGRINHO.png',
-            'VENDADO.png',
-            'GORDINHO.png',
-            'SURDO.png',
-            'CONFUSO.png',
-            'TRIST%C3%83O.png'
+            'ORIGINAL.png', 'RAIO%20X.png', 'FELIZ%201.png', 'FELIZ%202.png',
+            'SUJO.png', 'MAGRINHO.png', 'VENDADO.png', 'GORDINHO.png',
+            'SURDO.png', 'CONFUSO.png', 'TRIST%C3%83O.png'
         ];
 
-        // Variáveis de estado para o carregamento
         let isLoading = true;
         let loadProgress = 0;
         let loadedImagesCount = 0;
 
         function preloadImages() {
-            if (imagesToPreload.length === 0) {
-                isLoading = false;
-                renderApp();
-                return;
-            }
-
             imagesToPreload.forEach(imgName => {
                 const img = new Image();
-                
-                // Função chamada quer a imagem carregue com sucesso ou dê erro
                 img.onload = img.onerror = () => {
                     loadedImagesCount++;
                     loadProgress = Math.floor((loadedImagesCount / imagesToPreload.length) * 100);
                     
-                    // Atualiza a barra de progresso na DOM se ela existir
                     const progressBar = document.getElementById('progress-bar');
-                    const progressText = document.getElementById('progress-text');
-                    
                     if (progressBar) progressBar.style.width = loadProgress + '%';
-                    if (progressText) progressText.innerText = loadProgress + '%';
 
-                    // Quando todas carregarem, remove o estado de loading e re-renderiza
                     if (loadedImagesCount >= imagesToPreload.length) {
-                        // Pequeno atraso para o utilizador ver o 100%
                         setTimeout(() => {
                             isLoading = false;
                             renderApp();
-                        }, 300);
+                        }, 500);
                     }
                 };
-                
                 img.src = imgBase + imgName;
             });
         }
 
+        // --- Ícones SVG ---
+        const icons = {
+            design: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-8 h-8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="m14 14-2-2m-2-2 2 2m0 0 2-2m-2 2-2 2"/></svg>`,
+            product: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-8 h-8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`,
+            intelligence: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-8 h-8"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
+            strategy: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-8 h-8"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>`,
+            community: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-8 h-8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+            cx: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-8 h-8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+        };
+
         const scenarios = [
             {
-                id: 1, title: "Cenário 1: Pelo Sujo e Mal Cuidado", icon: icons.design,
+                id: 1, title: "Pelo Sujo e Mal Cuidado", icon: icons.design,
                 symptom: "O Jorginho tá com o pelo feio, embaraçado, caindo… ninguém quer chegar perto dele.",
                 visualState: "dirty",
                 options: [
                     { id: 'A', text: "Colocar uma roupinha por cima para esconder a sujeira.", type: "wrong" },
                     { id: 'B', text: "Raspar o gato inteiro e deixar ele careca.", type: "wrong" },
-                    { id: 'C', text: "Banho, escovação e vitaminas.", type: "correct" }
+                    { id: 'C', text: "Dar banho, escovação e aplicar vitaminas.", type: "correct" }
                 ],
                 department: "Time de Design",
-                explanation: "Essa é uma analogia clara com o nosso time de DESIGN. Se o visual é confuso, o cliente se afasta. Refazemos o visual para passar credibilidade.",
-                realWorld: "A reformulação da UI da plataforma. Menos ruído, mais conversão. O aluno bate o olho e confia no que vê."
+                explanation: "Se o visual é confuso, o cliente afasta-se. Refazemos o visual de plataformas e materiais para passar credibilidade absoluta.",
+                realWorld: "Reformulação da UI da plataforma e kits físicos premium. O aluno bate o olho e sente confiança imediata."
             },
             {
-                id: 2, title: "Cenário 2: Falta de Nutrientes", icon: icons.product,
-                symptom: "O Jorginho até vive… mas tá fraco. Passa o dia deitado, sem energia, parece anémico.",
+                id: 2, title: "Falta de Nutrientes", icon: icons.product,
+                symptom: "O Jorginho até vive… mas tá fraco. Passa o dia deitado, sem energia para nada, anémico.",
                 visualState: "weak",
                 options: [
-                    { id: 'A', text: "Dar café e energético para ele.", type: "wrong" },
-                    { id: 'B', text: "Forçar ele a correr na esteira.", type: "wrong" },
-                    { id: 'C', text: "Dieta rica para fortalecer os músculos.", type: "correct" }
+                    { id: 'A', text: "Dar doses de café e energético para ele.", type: "wrong" },
+                    { id: 'B', text: "Forçar ele a correr 10km na esteira.", type: "wrong" },
+                    { id: 'C', text: "Aplicar dieta rica para fortalecer a musculatura.", type: "correct" }
                 ],
                 department: "Time de Produto (P&D)",
-                explanation: "É o nosso processo de P&D e Kaizen. Nutrimos o Jorginho com materiais didáticos e aulas de profundidade.",
-                realWorld: "Mapas mentais e apostilas densas. Entregamos conteúdo de valor que sustenta o aprendizado do aluno."
+                explanation: "Nutrimos a nossa base. Se o conteúdo é raso, o membro não fica. Construímos materiais com densidade e aplicabilidade real.",
+                realWorld: "Apostilas profundas e mapas mentais. Quando o mercado muda, o nosso P&D já estudou e transformou num framework."
             },
             {
-                id: 3, title: "Cenário 3: Visão Turva", icon: icons.intelligence,
-                symptom: "O Jorginho tá esbarrando nos móveis. Ele dá o bote no lugar errado porque não enxerga bem.",
+                id: 3, title: "Visão Turva (Catarata)", icon: icons.intelligence,
+                symptom: "O Jorginho tá esbarrando nos móveis. Ele dá o bote no lugar errado porque não enxerga direito.",
                 visualState: "blind",
                 options: [
-                    { id: 'A', text: "Colocar plástico bolha na casa inteira.", type: "wrong" },
-                    { id: 'B', text: "Acender luzes fortíssimas.", type: "wrong" },
-                    { id: 'C', text: "Cirurgia de catarata para devolver o foco.", type: "correct" }
+                    { id: 'A', text: "Enrolar todos os móveis da casa em plástico bolha.", type: "wrong" },
+                    { id: 'B', text: "Instalar holofotes industriais pelo teto.", type: "wrong" },
+                    { id: 'C', text: "Fazer cirurgia de catarata para devolver o foco.", type: "correct" }
                 ],
                 department: "Inteligência de Produto",
-                explanation: "Analisamos dados para entender o comportamento. Paramos de dar botes no escuro ao enxergar o que o aluno faz.",
-                realWorld: "Dashboards de dados. Identificamos onde o aluno para de ver as aulas e corrigimos o percurso com precisão."
+                explanation: "Analisamos os dados para parar de dar botes no escuro. Enxergamos o comportamento para agir com precisão.",
+                realWorld: "Uso de Dashboards. Detetamos exatamente onde o aluno pausa os vídeos e ajustamos aquele gargalo na jornada."
             },
             {
-                id: 4, title: "Cenário 4: Obesidade Felina", icon: icons.strategy,
-                symptom: "O Jorginho tá pesado demais. Ele tenta pular no sofá, mas a barriga não sai do chão.",
+                id: 4, title: "Obesidade Felina", icon: icons.strategy,
+                symptom: "O Jorginho tá pesado demais. Tenta pular no sofá, mas a barriga não sai do chão. Está lento.",
                 visualState: "fat",
                 options: [
-                    { id: 'A', text: "Comprar um sofá mais baixo.", type: "wrong" },
-                    { id: 'B', text: "Carregar ele no colo para sempre.", type: "wrong" },
-                    { id: 'C', text: "Dieta rigorosa e foco na agilidade.", type: "correct" }
+                    { id: 'A', text: "Serrar os pés do sofá para ficar mais baixo.", type: "wrong" },
+                    { id: 'B', text: "Carregar o gato no colo para sempre.", type: "wrong" },
+                    { id: 'C', text: "Dieta rigorosa focando apenas no que dá agilidade.", type: "correct" }
                 ],
                 department: "Estratégia de Produto",
-                explanation: "Otimizamos o que existe. Matamos ferramentas ou aulas que pesam na plataforma sem agregar valor.",
-                realWorld: "Descontinuar ferramentas confusas para focar no core business: CASA AUVP e AUVP Negócios."
+                explanation: "Otimizar significa 'matar' o que pesa e não gera valor. Descontinuamos distrações para focar no negócio principal.",
+                realWorld: "Matar turmas antigas ou ferramentas secundárias. Foco total em deixar a CASA AUVP leve e escalável."
             },
             {
-                id: 5, title: "Cenário 5: Surdez", icon: icons.community,
-                symptom: "O Jorginho não reage ao mundo. Você chama e ele nem vira a orelha. Está isolado.",
+                id: 5, title: "Surdez", icon: icons.community,
+                symptom: "O Jorginho não reage ao mundo. Chama-se, o cão ladra, e ele nem vira a orelha. Está isolado.",
                 visualState: "deaf",
                 options: [
-                    { id: 'A', text: "Gritar mais alto.", type: "wrong" },
-                    { id: 'B', text: "Começar a falar sozinho.", type: "wrong" },
+                    { id: 'A', text: "Comprar um megafone e gritar mais alto.", type: "wrong" },
+                    { id: 'B', text: "Desistir e começar a falar sozinho.", type: "wrong" },
                     { id: 'C', text: "Limpar os ouvidos e treinar a atenção.", type: "correct" }
                 ],
                 department: "Gestão de Comunidade",
-                explanation: "É ouvir ativamente o cliente. Integramos CS e Produto para criar o que as pessoas realmente precisam.",
-                realWorld: "Criação de páginas de lives baseadas no feedback real e comportamento dos alunos nos fóruns."
+                explanation: "Ouvimos ativamente o cliente. Integramos o Suporte com o Produto para criar o que as pessoas pedem.",
+                realWorld: "Páginas de Lives e Fóruns nasceram do feedback. O Suporte ouve a dor, o Produto cria a solução."
             },
             {
-                id: 6, title: "Cenário 6: Desorientação", icon: icons.cx,
-                symptom: "O Jorginho tá andando em círculos. Ele bate na parede e não sabe onde está a comida.",
+                id: 6, title: "Desorientação", icon: icons.cx,
+                symptom: "O Jorginho tá andando em círculos. Ele bate na parede e não sabe onde está a caixa de areia.",
                 visualState: "lost",
                 options: [
-                    { id: 'A', text: "Deixar ele batendo a cabeça até aprender.", type: "wrong" },
-                    { id: 'B', text: "Trancar ele numa caixa pequena.", type: "wrong" },
-                    { id: 'C', text: "Guiar com petiscos e caminho iluminado.", type: "correct" }
+                    { id: 'A', text: "Deixar ele bater a cabeça até aprender o mapa.", type: "wrong" },
+                    { id: 'B', text: "Trancar o gato dentro de uma caixa pequena.", type: "wrong" },
+                    { id: 'C', text: "Guiar com petiscos e criar um caminho claro.", type: "correct" }
                 ],
                 department: "Experiência do Cliente (CX)",
-                explanation: "Curamos a desorientação com onboarding e gamificação, pegando o cliente pela mão.",
-                realWorld: "Jornada clara pós-assinatura. O aluno sabe exatamente qual o primeiro, segundo e terceiro passo."
+                explanation: "Pegamos o cliente pela mão. Não deixamos que ele se sinta num limbo existencial após a assinatura.",
+                realWorld: "Onboarding gamificado e jornada clara. Medalhas e cartas físicas funcionam como 'petiscos' de engajamento."
             }
         ];
 
@@ -320,22 +314,21 @@
         // --- Renderizadores de Elementos ---
 
         function renderCatImage(state, isCuredFlag, isError) {
-            // Adicionado z-10 e hover:z-50 no container para que a imagem sobreponha o resto
-            let containerClasses = "relative w-full max-w-[260px] sm:max-w-[320px] md:max-w-[450px] lg:max-w-[500px] xl:max-w-[600px] aspect-square mx-auto flex items-center justify-center z-10 hover:z-50";
+            let containerClasses = "relative w-full h-full flex items-center justify-center z-10 hover:z-50";
             
             if (isError) {
                 return `
                 <div class="${containerClasses} animate-shake">
-                    <div class="absolute inset-0 bg-red-500/10 rounded-full blur-2xl"></div>
-                    <img src="${imgBase}TRIST%C3%83O.png" alt="Gato Triste" class="w-full h-full object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.4)] relative z-20 origin-center transition-transform duration-500 hover:scale-[1.25] md:hover:scale-[1.35]" />
+                    <div class="absolute inset-0 bg-red-600/20 rounded-full blur-[100px]"></div>
+                    <img src="${imgBase}TRIST%C3%83O.png" alt="Gato Triste" class="max-w-full max-h-full object-contain drop-shadow-[0_30px_50px_rgba(0,0,0,0.5)] relative z-20 origin-center transition-transform duration-500 scale-105" />
                 </div>`;
             }
 
             if (isCuredFlag) {
                 return `
-                <div class="${containerClasses}">
-                    <div class="absolute inset-0 bg-emerald-500/20 rounded-full blur-2xl"></div>
-                    <div class="w-full h-full animate-happy drop-shadow-[0_20px_30px_rgba(0,0,0,0.4)] relative z-20 origin-center transition-transform duration-500 hover:scale-[1.25] md:hover:scale-[1.35]"></div>
+                <div class="${containerClasses} animate-popIn">
+                    <div class="absolute inset-0 bg-emerald-500/30 rounded-full blur-[100px]"></div>
+                    <div class="w-full h-full animate-happy drop-shadow-[0_30px_50px_rgba(0,0,0,0.5)] relative z-20 origin-center scale-105"></div>
                 </div>`;
             }
 
@@ -350,11 +343,10 @@
                 default: imgSrc = 'ORIGINAL.png'; break;
             }
 
-            // O Gatinho agora tem hover:scale-[1.25] e origin-center para crescer imenso e não cortar a prancheta
             return `
-            <div class="${containerClasses}">
-                <div class="absolute inset-0 bg-[#8b5a2b]/10 rounded-full blur-2xl"></div>
-                <img src="${imgBase}${imgSrc}" alt="Paciente Jorginho" class="w-full h-full object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.3)] transition-transform duration-500 hover:scale-[1.25] md:hover:scale-[1.35] relative z-20 origin-center" />
+            <div class="${containerClasses} animate-popIn">
+                <div class="absolute inset-0 bg-[#8b5a2b]/20 rounded-full blur-[100px]"></div>
+                <img src="${imgBase}${imgSrc}" alt="Paciente Jorginho" class="max-w-full max-h-full object-contain drop-shadow-[0_30px_50px_rgba(0,0,0,0.4)] relative z-20 origin-center transition-transform duration-500 hover:scale-110" />
             </div>`;
         }
 
@@ -363,114 +355,99 @@
 
             // --- 1. TELA DE INTRODUÇÃO (RAIO X) ---
             if (isIntro) {
-                document.body.classList.add('bg-final');
                 container.innerHTML = `
-                <div class="flex items-center justify-center min-h-screen w-full px-2 sm:px-4 animate-fadeIn">
-                    <div class="max-w-xl xl:max-w-5xl w-full bg-[#fdf6e3] p-6 sm:p-10 xl:p-12 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] border-4 border-[#8b5a2b] text-center relative overflow-hidden xl:flex xl:items-center xl:gap-10">
-                        <div class="absolute inset-0 opacity-[0.04] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIi8+CjxwYXRoIGQ9Ik0xLDFoMnYyaC0yeiIgZmlsbD0iIzAwMCIvPgo8L3N2Zz4=')] mix-blend-multiply"></div>
+                <div class="flex flex-col items-center justify-center w-full h-full animate-fadeIn text-center">
+                    <h1 class="text-6xl lg:text-8xl font-bold text-white mb-6 font-serif drop-shadow-2xl">Clinica de Produto</h1>
+                    <p class="text-2xl text-[#e6d5a1] mb-12 font-serif italic tracking-widest uppercase">Conheça nosso time!</p>
+                    
+                    <!-- Fundo do Raio X Escuro e Realista -->
+                    <div class="relative w-[500px] h-[500px] lg:w-[700px] lg:h-[700px] max-h-[50vh] max-w-[50vh] mx-auto bg-slate-900 rounded-full stage-shadow border-[12px] border-slate-800 overflow-hidden z-10 mb-12 shadow-[inset_0_0_50px_rgba(0,0,0,0.8)]">
+                        <!-- Grelha de monitor médico ao fundo -->
+                        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
 
-                        <div class="relative w-64 h-64 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] xl:w-[520px] xl:h-[520px] xl:shrink-0 mx-auto xl:mx-0 mb-10 xl:mb-0 bg-[#e5e5f7] rounded-lg shadow-inner border border-[#8b5a2b]/20 p-2 overflow-hidden z-10">
-                            <img src="${imgBase}ORIGINAL.png" alt="Gato Original" class="absolute inset-0 w-full h-full object-contain p-2" />
-
-                            <div class="absolute inset-0 w-full h-full p-2 animate-scanline z-20 pointer-events-none">
-                                <div class="relative w-full h-full">
-                                    <img src="${imgBase}RAIO%20X.png" alt="Raio X" class="w-full h-full object-contain drop-shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
-                                    <div class="absolute bottom-0 left-0 w-full h-1 bg-cyan-400 shadow-[0_0_15px_4px_rgba(34,211,238,0.8)]"></div>
-                                </div>
+                        <!-- Gato Original com mais destaque e contraste -->
+                        <img src="${imgBase}ORIGINAL.png" alt="Gato Original" class="absolute inset-0 w-full h-full object-contain p-10 opacity-70 drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]" />
+                        
+                        <div class="absolute inset-0 w-full h-full p-10 animate-scanline z-20 pointer-events-none">
+                            <div class="relative w-full h-full">
+                                <!-- Raio X em modo Screen para brilhar sobre o fundo escuro -->
+                                <img src="${imgBase}RAIO%20X.png" alt="Raio X" class="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(34,211,238,0.8)] mix-blend-screen brightness-110" />
+                                <div class="absolute bottom-0 left-0 w-full h-2 bg-cyan-400 shadow-[0_0_30px_10px_rgba(34,211,238,1)]"></div>
                             </div>
-                        </div>
-
-                        <div class="xl:flex-1 xl:text-left relative z-10 min-w-0">
-                            <h1 class="text-3xl sm:text-4xl xl:text-6xl font-bold text-[#451a03] mb-3 font-serif">Clínica do Jorginho</h1>
-                            <p class="text-sm sm:text-base xl:text-xl text-[#5c4033] mb-8 font-serif font-medium">Iniciando escaneamento de diagnóstico corporativo...</p>
-
-                            ${isLoading ? `
-                            <div class="w-full max-w-xs xl:max-w-sm mx-auto xl:mx-0 mt-4 animate-fadeIn">
-                                <div class="flex justify-between text-[#8b5a2b] text-xs xl:text-sm font-bold font-mono mb-2 uppercase tracking-widest">
-                                    <span>Analisando...</span>
-                                    <span id="progress-text">${loadProgress}%</span>
-                                </div>
-                                <div class="w-full h-3 bg-[#e5e5f7] rounded-full overflow-hidden border border-[#8b5a2b]/20 shadow-inner">
-                                    <div id="progress-bar" class="h-full bg-gradient-to-r from-[#8b5a2b] to-[#5c4033] transition-all duration-200 ease-out" style="width: ${loadProgress}%"></div>
-                                </div>
-                            </div>
-                            ` : `
-                            <button onclick="window.startApp()" class="bg-gradient-to-b from-[#8b5a2b] to-[#5c4033] border-2 border-[#3e2723] hover:from-[#a06932] text-white px-6 py-3 sm:px-8 sm:py-4 xl:px-12 xl:py-5 rounded-md font-bold flex items-center mx-auto xl:mx-0 space-x-2 shadow-xl hover:-translate-y-1 transition-transform tracking-widest uppercase text-sm sm:text-base xl:text-xl animate-fadeIn">
-                                <span>Iniciar Diagnóstico</span>
-                            </button>
-                            <p class="hidden xl:block mt-6 text-[#8b5a2b]/60 text-sm font-mono uppercase tracking-widest">Ou pressione <kbd class="bg-[#8b5a2b]/10 border border-[#8b5a2b]/30 rounded px-2 py-0.5">Space</kbd> para avançar</p>
-                            `}
                         </div>
                     </div>
+
+                    ${isLoading ? `
+                    <div class="w-[600px] mx-auto">
+                        <div class="flex justify-between text-[#e6d5a1] text-xl font-bold font-mono mb-4 uppercase tracking-widest">
+                            <span>Carregando Assets...</span><span id="progress-text">${loadProgress}%</span>
+                        </div>
+                        <div class="w-full h-4 bg-[#022c22] rounded-full overflow-hidden border border-[#064e3b] shadow-inner">
+                            <div id="progress-bar" class="h-full bg-gradient-to-r from-[#10b981] to-[#34d399]" style="width: ${loadProgress}%"></div>
+                        </div>
+                    </div>
+                    ` : `
+                    <div class="animate-pulse text-[#e6d5a1] text-3xl font-bold tracking-widest font-mono uppercase mt-4">
+                        [ Pressione ESPAÇO para Iniciar ]
+                    </div>
+                    `}
                 </div>`;
                 return;
             }
 
             // --- 2. TELA FINAL (ALTA MÉDICA) ---
             if (flowComplete) {
-                document.body.classList.add('bg-final');
                 container.innerHTML = `
-                <div class="flex items-center justify-center min-h-screen w-full px-2 sm:px-4 animate-fadeIn">
-                    <div class="max-w-xl xl:max-w-5xl w-full bg-[#fdf6e3] p-6 sm:p-10 xl:p-12 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] border-4 border-[#8b5a2b] text-center relative overflow-hidden xl:flex xl:items-center xl:gap-10">
-                        <div class="absolute inset-0 opacity-[0.04] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIi8+CjxwYXRoIGQ9Ik0xLDFoMnYyaC0yeiIgZmlsbD0iIzAwMCIvPgo8L3N2Zz4=')] mix-blend-multiply"></div>
-
-                        <div class="relative w-64 h-64 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] xl:w-[480px] xl:h-[480px] xl:shrink-0 mx-auto xl:mx-0 mb-4 xl:mb-0 flex items-center justify-center z-10 hover:z-50">
-                            <div class="absolute inset-0 bg-amber-500/20 rounded-full blur-2xl"></div>
-                            <div class="w-full h-full animate-happy drop-shadow-[0_20px_30px_rgba(0,0,0,0.4)] relative z-10 transition-transform duration-500 hover:scale-[1.25] origin-center"></div>
-                        </div>
-
-                        <div class="xl:flex-1 xl:text-left relative z-10 min-w-0">
-                            <h1 class="text-3xl xl:text-6xl font-bold text-[#451a03] mb-4">Alta Médica!</h1>
-                            <p class="text-sm sm:text-base xl:text-xl text-[#5c4033] mb-8 font-serif font-medium">O Jorginho está completamente recuperado e o seu negócio está em equilíbrio total. Parabéns, Doutor!</p>
-                            <button onclick="window.reboot()" class="bg-gradient-to-b from-[#8b5a2b] to-[#5c4033] border-2 border-[#3e2723] hover:from-[#a06932] text-white px-6 py-3 sm:px-8 sm:py-3 xl:px-12 xl:py-5 rounded-md font-bold flex items-center mx-auto xl:mx-0 space-x-2 shadow-lg uppercase tracking-wider text-sm sm:text-base xl:text-xl">
-                                ${icons.reset} <span>Nova Avaliação</span>
-                            </button>
-                        </div>
+                <div class="flex flex-col items-center justify-center w-full h-full animate-fadeIn text-center">
+                    <h1 class="text-7xl lg:text-8xl font-bold text-white mb-6 font-serif drop-shadow-2xl">Alta Médica Total</h1>
+                    <p class="text-3xl text-[#e6d5a1] mb-16 font-serif max-w-5xl mx-auto leading-relaxed">
+                        O Jorginho está 100% curado e a estrutura do negócio está otimizada.<br>Um produto saudável atrai sempre novos habitantes.
+                    </p>
+                    
+                    <div class="relative w-[500px] h-[500px] lg:w-[700px] lg:h-[700px] max-h-[50vh] max-w-[50vh] mx-auto z-10 mb-12">
+                        <div class="absolute inset-0 bg-amber-500/40 rounded-full blur-[120px]"></div>
+                        <img src="${imgBase}ORIGINAL.png" alt="Gato Original" class="w-full h-full object-contain drop-shadow-[0_40px_60px_rgba(0,0,0,0.6)] relative z-10" />
+                    </div>
+                    
+                    <div class="animate-pulse text-[#e6d5a1] text-3xl font-bold tracking-widest font-mono uppercase">
+                        [ Pressione ESPAÇO para Nova Avaliação ]
                     </div>
                 </div>`;
                 return;
             }
 
-            // --- 3. TELA DO DIAGNÓSTICO (JOGO) ---
-            document.body.classList.remove('bg-final');
+            // --- 3. TELA DO DIAGNÓSTICO (LAYOUT 1080p - ECRÃ INTEIRO) ---
             const s = scenarios[currentStep];
             
-            // Loop para criar o carrossel de Receitas
+            // Área de Receitas (Bottom 35%)
             let optionsHTML = currentShuffledOptions.map((opt, i) => {
                 const isSel = selectedOptionId === opt.id;
                 const isDisabled = selectedOptionId !== null;
-
-                // Estados e Hovers
-                const hoverClasses = !isDisabled ? 'hover:-translate-y-3 hover:z-30 hover:scale-[1.02]' : '';
-                const selectedClasses = isSel ? '!-translate-y-3 !z-40 scale-[1.02]' : '';
+                const dimClass = isDisabled && !isSel ? 'opacity-30 grayscale' : '';
+                const selectedClass = isSel ? 'scale-[1.03] -translate-y-4 z-40' : '';
+                const hoverClass = !isDisabled ? 'hover:-translate-y-4 hover:shadow-[0_20px_40px_rgba(0,0,0,0.6)]' : '';
 
                 return `
-                <div class="group w-[82vw] sm:w-[320px] md:w-auto shrink-0 snap-center flex flex-col items-center cursor-pointer transition-all duration-300 ${isDisabled && !isSel ? 'opacity-50 grayscale' : ''} ${hoverClasses} ${selectedClasses}" onclick="${!isDisabled ? `window.select('${opt.id}')` : ''}">
-                    
-                    <!-- Receituário Médico -->
-                    <div class="w-full h-full bg-[#fcfcfc] rounded-md shadow-[0_6px_15px_rgba(0,0,0,0.4)] border border-[#cbd5e1] relative flex flex-col overflow-hidden transition-all duration-300 ${!isDisabled ? 'group-hover:shadow-[0_12px_25px_rgba(0,0,0,0.5)]' : ''}">
-                        
-                        <!-- Cabeçalho da Receita -->
-                        <div class="h-8 xl:h-12 bg-blue-900 w-full flex items-center px-4 xl:px-6 justify-between shrink-0">
-                            <span class="text-white text-xs xl:text-sm font-bold tracking-widest uppercase">Receituário</span>
-                            <span class="text-blue-200 text-xs xl:text-sm font-serif italic">Clínica AUVP</span>
+                <div class="flex-1 h-full flex flex-col transition-all duration-500 origin-bottom ${dimClass} ${selectedClass} ${hoverClass}">
+                    <div class="w-full h-full bg-[#fcfcfc] rounded-lg stage-shadow border border-[#cbd5e1] flex flex-col overflow-hidden relative">
+                        <!-- Topo da Receita -->
+                        <div class="h-10 bg-blue-900 w-full flex items-center px-6 justify-between shrink-0">
+                            <span class="text-white text-base font-bold tracking-widest uppercase">Receituário [ ${i + 1} ]</span>
+                            <span class="text-blue-200 text-sm font-serif italic">Clínica AUVP</span>
                         </div>
                         
-                        <!-- Corpo pautado com Letra de Médico e Efeito de Escrita -->
-                        <div class="p-5 sm:p-6 xl:p-8 flex-grow flex flex-col relative bg-[linear-gradient(transparent_95%,_#e5e7eb_95%)] bg-[length:100%_2.5rem] xl:bg-[length:100%_4rem] min-h-[180px] xl:min-h-[220px]">
-
-                            <div class="text-blue-900 font-serif text-2xl xl:text-5xl font-bold opacity-30 absolute top-4 left-4 xl:top-6 xl:left-6 pointer-events-none">Rx</div>
-
-                            <!-- Texto Animado com Delay em cascata para cada receita -->
-                            <p class="font-handwriting text-2xl sm:text-3xl xl:text-5xl leading-[2.5rem] xl:leading-[4rem] mt-6 xl:mt-8 flex-grow z-10 px-2 ${!isDisabled ? 'animate-write' : 'text-blue-800'}" ${!isDisabled ? `style="animation-delay: ${0.2 + (i * 0.15)}s;"` : ''}>
-                                ${opt.text.replace('💊 ', '')}
+                        <!-- Corpo da Receita -->
+                        <div class="p-6 lg:p-8 flex-grow flex flex-col relative bg-[linear-gradient(transparent_95%,_#e5e7eb_95%)] bg-[length:100%_3rem] overflow-y-auto hide-scrollbar">
+                            <div class="text-blue-900 font-serif text-5xl font-bold opacity-10 absolute top-6 left-6 pointer-events-none">Rx</div>
+                            
+                            <p class="font-handwriting text-3xl lg:text-4xl leading-[2.5rem] lg:leading-[3rem] mt-6 lg:mt-8 z-10 px-2 lg:px-4 ${!isDisabled ? 'animate-write' : 'text-blue-800'}" ${!isDisabled ? `style="animation-delay: ${0.2 + (i * 0.15)}s;"` : ''}>
+                                ${opt.text}
                             </p>
-
-                            <!-- Carimbo Médico ao selecionar -->
+                            
                             ${isSel ? `
-                            <div class="absolute bottom-4 right-4 z-30 transform -rotate-12 animate-[fadeIn_0.3s_ease-out]">
-                                <div class="border-4 ${opt.type === 'correct' ? 'border-green-600 text-green-600' : 'border-red-600 text-red-600'} rounded-lg px-3 py-1 xl:px-5 xl:py-2 bg-white/90 shadow-sm backdrop-blur-sm">
-                                    <span class="font-bold uppercase tracking-widest text-sm md:text-base xl:text-xl opacity-90">
+                            <div class="absolute bottom-8 right-8 z-30 transform -rotate-12 animate-popIn">
+                                <div class="border-[6px] ${opt.type === 'correct' ? 'border-green-600 text-green-600' : 'border-red-600 text-red-600'} rounded-xl px-6 py-2 bg-white/95 shadow-xl">
+                                    <span class="font-bold uppercase tracking-widest text-3xl opacity-90">
                                         ${opt.type === 'correct' ? 'APROVADO' : 'RECUSADO'}
                                     </span>
                                 </div>
@@ -482,78 +459,70 @@
             }).join('');
 
             container.innerHTML = `
-            <div class="max-w-5xl xl:max-w-none w-full flex flex-col space-y-8 xl:space-y-3 animate-fadeIn px-0 sm:px-2 md:px-0 xl:px-8 xl:h-full xl:justify-between">
-
-                <!-- Indicador de Progresso (Telão only) -->
-                <div class="hidden xl:flex items-center justify-between py-1">
-                    <div class="flex gap-3 items-center">
-                        ${scenarios.map((_, i) => `<div class="transition-all duration-300 rounded-full ${i < currentStep ? 'w-3 h-3 bg-[#8b5a2b]' : i === currentStep ? 'w-4 h-4 bg-[#fdf6e3] shadow-[0_0_8px_rgba(253,246,227,0.6)]' : 'w-3 h-3 bg-[#fdf6e3]/25 border border-[#fdf6e3]/30'}"></div>`).join('')}
+            <div class="w-full h-full flex flex-col gap-6 lg:gap-8">
+                
+                <!-- TOP SECTION: GATO + PRONTUÁRIO (65% Altura) -->
+                <div class="flex-grow flex gap-6 lg:gap-8 min-h-0 relative">
+                    
+                    <!-- LEFT: Gatinho Gigante -->
+                    <div class="w-[45%] h-full flex items-center justify-center relative">
+                        ${renderCatImage(s.visualState, isCured, glitchError)}
                     </div>
-                    <span class="text-[#fdf6e3]/60 text-sm font-mono uppercase tracking-widest">Cenário ${currentStep + 1} / ${scenarios.length}</span>
-                    <button onclick="window.toggleFullscreen()" class="text-[#fdf6e3]/40 hover:text-[#fdf6e3]/80 transition-colors p-1 rounded" title="Fullscreen (F)">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-                    </button>
-                </div>
-
-                <!-- Prancheta Médica / Prontuário Lado a Lado -->
-                <div class="bg-[#fdf6e3] rounded-b-xl sm:rounded-b-3xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] border-x border-b border-[#e6d5a1] relative transition-transform ${glitchError ? 'animate-shake' : ''} z-20 xl:flex-1 xl:min-h-0">
-                    <div class="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIi8+CjxwYXRoIGQ9Ik0xLDFoMnYyaC0yeiIgZmlsbD0iIzAwMCIvPgo8L3N2Zz4=')] mix-blend-multiply rounded-b-3xl"></div>
-
-                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-32 sm:w-40 h-8 sm:h-10 bg-gradient-to-b from-[#cbd5e1] to-[#94a3b8] border-b border-x border-[#64748b] rounded-b-xl shadow-lg flex items-center justify-center z-20">
-                        <div class="w-24 h-1.5 sm:h-2 bg-[#475569] shadow-inner rounded-full"></div>
-                    </div>
-
-                    <div class="p-4 sm:p-6 md:p-10 xl:p-10 pt-12 md:pt-16 xl:pt-14 relative z-10 flex flex-col md:flex-row items-center md:items-stretch gap-6 md:gap-10 xl:gap-12 xl:h-full">
-
-                        <!-- Lado Esquerdo: Imagem do Jorginho Grande -->
-                        <div class="w-full md:w-1/2 flex items-center justify-center relative min-h-[250px] sm:min-h-[300px] md:min-h-[350px] xl:min-h-0">
-                            ${renderCatImage(s.visualState, isCured, glitchError)}
-                        </div>
+                    
+                    <!-- RIGHT: Prontuário Médico Enorme -->
+                    <div class="w-[55%] h-full paper-texture rounded-2xl stage-shadow border-2 border-[#e6d5a1] flex flex-col p-6 lg:p-10 relative overflow-y-auto hide-scrollbar">
                         
-                        <!-- Lado Direito: O Prontuário Médico -->
-                        <div class="w-full md:w-1/2 bg-white/60 p-4 sm:p-6 md:p-8 xl:p-10 rounded-md border-2 border-[#8b5a2b]/20 shadow-inner flex flex-col justify-between relative z-0">
+                        <!-- Clip do Prontuário -->
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[30%] h-10 bg-gradient-to-b from-[#cbd5e1] to-[#94a3b8] border-b border-x border-[#64748b] rounded-b-xl shadow-lg flex items-center justify-center z-20">
+                            <div class="w-2/3 h-2 bg-[#475569] shadow-inner rounded-full"></div>
+                        </div>
 
-                            <div class="border-b-2 border-[#8b5a2b]/30 pb-3 md:pb-4 mb-4 md:mb-6 flex flex-col items-center">
-                                <h2 class="text-xl sm:text-2xl md:text-3xl xl:text-5xl font-bold uppercase tracking-widest text-[#451a03] font-serif text-center">Prontuário</h2>
-                                <span class="bg-[#8b5a2b]/10 px-3 py-1 rounded-full text-[10px] sm:text-xs xl:text-sm font-bold text-[#8b5a2b] mt-2 font-mono">Ficha: 0${currentStep + 1} | REF: AUVP-${s.id}</span>
+                        <!-- Header Prontuário -->
+                        <div class="mt-6 flex justify-between items-end border-b-[3px] border-[#8b5a2b]/30 pb-4 shrink-0">
+                            <div>
+                                <h2 class="text-3xl lg:text-5xl font-bold uppercase tracking-widest text-[#451a03] font-serif">${s.title}</h2>
+                                <div class="flex items-center gap-3 mt-2 text-xl lg:text-2xl font-bold text-[#8b5a2b] uppercase tracking-widest">
+                                    ${s.icon} <span>${s.department}</span>
+                                </div>
                             </div>
+                            <span class="bg-[#8b5a2b]/10 px-4 py-2 lg:px-6 lg:py-2 rounded-lg text-lg lg:text-xl font-bold text-[#8b5a2b] font-mono border border-[#8b5a2b]/20">
+                                Ficha: 0${currentStep + 1}
+                            </span>
+                        </div>
 
+                        <!-- Corpo Prontuário -->
+                        <div class="flex-grow flex flex-col justify-center mt-4">
                             ${!isCured ? `
-                            <div class="font-mono text-[#451a03] space-y-3 sm:space-y-4 xl:space-y-5 flex-grow flex flex-col text-xs sm:text-sm xl:text-base">
-                                <div class="flex justify-between border-b border-[#8b5a2b]/10 pb-2">
+                            <!-- Estado Sintoma -->
+                            <div class="font-mono text-[#451a03] text-xl lg:text-2xl space-y-4 lg:space-y-5">
+                                <div class="flex justify-between border-b-2 border-[#8b5a2b]/10 pb-3">
                                     <span class="font-bold">Paciente:</span> <span>Jorginho</span>
                                 </div>
-                                <div class="flex justify-between border-b border-[#8b5a2b]/10 pb-2">
+                                <div class="flex justify-between border-b-2 border-[#8b5a2b]/10 pb-3">
                                     <span class="font-bold">Espécie:</span> <span>Felis Corporativus</span>
                                 </div>
-                                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-[#8b5a2b]/10 pb-2 gap-2">
-                                    <span class="font-bold">Setor Clínico:</span>
-                                    <span class="uppercase flex items-center gap-2 font-bold bg-[#8b5a2b]/10 px-2 py-0.5 rounded">${s.icon} ${s.department}</span>
-                                </div>
-
-                                <div class="mt-4 sm:mt-6 bg-[#8b5a2b]/5 p-3 sm:p-4 xl:p-6 rounded border border-[#8b5a2b]/10 relative flex-grow shadow-inner">
-                                    <span class="absolute -top-3 left-3 bg-[#fdf6e3] px-2 font-bold text-red-600 text-[10px] sm:text-xs xl:text-sm animate-pulse border border-red-200 rounded-sm">URGENTE: SINTOMAS</span>
-                                    <p class="leading-relaxed mt-2 italic text-[#5c4033] font-sans font-medium xl:text-xl xl:leading-relaxed">
+                                
+                                <div class="mt-6 lg:mt-8 bg-[#8b5a2b]/5 p-6 lg:p-8 rounded-xl border border-[#8b5a2b]/10 relative shadow-inner">
+                                    <span class="absolute -top-4 left-6 bg-[#fdf6e3] px-3 py-1 font-bold text-red-600 text-lg animate-pulse border-2 border-red-200 rounded-md">URGENTE: SINTOMAS</span>
+                                    <p class="leading-relaxed mt-2 italic text-[#5c4033] font-sans font-semibold">
                                         "${s.symptom}"
                                     </p>
                                 </div>
-
-                                <div class="mt-2 pt-2 text-center text-[10px] sm:text-xs xl:text-sm text-[#8b5a2b] font-bold opacity-80 uppercase tracking-widest">
-                                    [ Aguardando prescrição ]
-                                </div>
                             </div>
                             ` : `
-                            <div class="font-sans text-[#451a03] flex-grow flex flex-col justify-center animate-fadeIn">
-                                <div class="mb-4 sm:mb-6 text-center">
-                                    <span class="inline-block bg-green-100 text-green-800 text-[10px] sm:text-xs xl:text-sm px-2 py-1 rounded font-bold uppercase tracking-widest mb-2 border border-green-300 shadow-sm">Tratamento Bem-Sucedido</span>
-                                    <h3 class="text-lg sm:text-xl md:text-2xl xl:text-3xl font-bold uppercase tracking-tighter text-[#8b5a2b] font-serif">${s.department}</h3>
+                            <!-- Estado Curado (Resultados) -->
+                            <div class="font-sans text-[#451a03] flex-grow flex flex-col justify-center animate-fadeIn space-y-4 lg:space-y-6">
+                                <div>
+                                    <span class="inline-block bg-green-100 text-green-800 text-lg px-4 py-2 rounded font-bold uppercase tracking-widest mb-2 border-2 border-green-400 shadow-sm">Tratamento Bem-Sucedido</span>
                                 </div>
-
-                                <p class="text-sm sm:text-base xl:text-lg leading-relaxed mb-4 sm:mb-6 border-l-4 border-[#8b5a2b] pl-4 text-[#5c4033] font-serif">${s.explanation}</p>
-
-                                <div class="bg-black/5 p-3 sm:p-4 xl:p-6 rounded-md italic text-[#5c4033] border border-[#8b5a2b]/10 shadow-inner text-xs sm:text-sm xl:text-base mt-auto">
-                                    <strong class="uppercase text-[#b45309] text-[10px] sm:text-xs xl:text-sm tracking-widest block mb-1 sm:mb-2 font-sans not-italic">No Mundo Real:</strong>
-                                    "${s.realWorld}"
+                                
+                                <p class="text-2xl lg:text-3xl leading-relaxed border-l-[6px] border-[#8b5a2b] pl-6 text-[#5c4033] font-serif">
+                                    ${s.explanation}
+                                </p>
+                                
+                                <div class="bg-black/5 p-6 lg:p-8 rounded-xl italic text-[#5c4033] border-2 border-[#8b5a2b]/10 shadow-inner mt-4 lg:mt-6">
+                                    <strong class="uppercase text-[#b45309] text-xl tracking-widest block mb-2 font-sans not-italic">No Mundo Real:</strong> 
+                                    <span class="text-2xl lg:text-3xl font-medium">"${s.realWorld}"</span>
                                 </div>
                             </div>
                             `}
@@ -561,86 +530,25 @@
                     </div>
                 </div>
 
-                <!-- Receituário Médico (Oculto se Curado) -->
-                ${!isCured ? `
-                <div class="pt-2 pb-12 xl:pb-4 xl:pt-3 overflow-hidden z-10 relative xl:flex xl:flex-col">
-                    <h3 class="text-center text-[#fdf6e3] font-bold uppercase tracking-widest text-sm md:text-lg xl:text-2xl mb-2 sm:mb-4 xl:mb-3 drop-shadow-md px-4">Selecione a Prescrição</h3>
-                    <div class="md:hidden flex items-center justify-center gap-3 mb-3">
-                        <span class="swipe-arrow-left text-[#e6d5a1]">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-4 h-4"><polyline points="15 18 9 12 15 6"/></svg>
-                        </span>
-                        <span class="text-[#e6d5a1] text-[10px] sm:text-xs font-bold uppercase tracking-widest">Deslize para explorar</span>
-                        <span class="swipe-arrow-right text-[#e6d5a1]">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-4 h-4"><polyline points="9 18 15 12 9 6"/></svg>
-                        </span>
+                <!-- BOTTOM SECTION: RECEITAS (35% Altura) -->
+                <div class="h-[30vh] shrink-0 w-full relative z-30 flex gap-6 lg:gap-8">
+                    ${!isCured ? optionsHTML : `
+                    <div class="w-full h-full flex flex-col items-center justify-center animate-fadeIn">
+                        <div class="animate-pulse text-[#e6d5a1] text-4xl font-bold tracking-widest font-mono uppercase bg-[#2e1e14]/50 px-12 py-6 rounded-2xl border-2 border-[#e6d5a1]/30">
+                            [ Pressione ESPAÇO para o Próximo Diagnóstico ]
+                        </div>
                     </div>
-                    <div id="recipe-carousel" class="flex overflow-x-auto md:grid md:grid-cols-3 gap-4 md:gap-6 xl:gap-8 hide-scrollbar snap-x snap-mandatory px-4 sm:px-6 md:px-2 xl:px-0 pt-4 pb-8 xl:pb-2 -mx-4 md:mx-0 xl:flex-1">
-                        ${optionsHTML}
-                    </div>
-                    <div class="md:hidden flex items-center justify-center gap-2 mt-1 pb-2" id="carousel-dots">
-                        <div class="scroll-dot active"></div>
-                        <div class="scroll-dot inactive"></div>
-                        <div class="scroll-dot inactive"></div>
-                    </div>
-                    <p class="hidden xl:block text-center text-[#fdf6e3]/30 text-xs font-mono uppercase tracking-widest mt-2 pb-1">
-                        Teclas <kbd class="bg-[#fdf6e3]/10 border border-[#fdf6e3]/20 rounded px-1.5 py-0.5">1</kbd>
-                        <kbd class="bg-[#fdf6e3]/10 border border-[#fdf6e3]/20 rounded px-1.5 py-0.5">2</kbd>
-                        <kbd class="bg-[#fdf6e3]/10 border border-[#fdf6e3]/20 rounded px-1.5 py-0.5">3</kbd> para selecionar
-                    </p>
-                </div>` : `
-                <!-- Botão de Próximo Passo -->
-                <div class="flex justify-center pt-2 pb-10 sm:pb-12 xl:pb-4 animate-fadeIn px-4 z-10 relative">
-                    <div class="flex flex-col items-center gap-3">
-                        <button onclick="window.next()" class="w-full sm:w-auto px-8 sm:px-12 xl:px-16 bg-gradient-to-b from-[#8b5a2b] to-[#5c4033] hover:from-[#a06932] border-2 border-[#3e2723] text-white py-3 sm:py-4 xl:py-5 rounded-md font-bold flex items-center justify-center space-x-2 shadow-[0_10px_20px_rgba(0,0,0,0.5),inset_0_2px_5px_rgba(255,255,255,0.3)] uppercase tracking-widest transition-transform hover:-translate-y-1 active:translate-y-1 text-sm sm:text-base xl:text-xl">
-                            <span>${currentStep < scenarios.length - 1 ? 'Próximo Diagnóstico' : 'Finalizar Expediente'}</span> ${icons.arrow}
-                        </button>
-                        <p class="hidden xl:block text-[#fdf6e3]/30 text-xs font-mono uppercase tracking-widest">ou pressione <kbd class="bg-[#fdf6e3]/10 border border-[#fdf6e3]/20 rounded px-1.5 py-0.5">Space</kbd></p>
-                    </div>
+                    `}
                 </div>
-                `}
             </div>`;
-
-            // Attach carousel scroll listener to update dots
-            setTimeout(() => {
-                const carousel = document.getElementById('recipe-carousel');
-                const dots = document.querySelectorAll('#carousel-dots .scroll-dot');
-                if (!carousel || !dots.length) return;
-                carousel.addEventListener('scroll', () => {
-                    const maxScroll = carousel.scrollWidth - carousel.clientWidth;
-                    if (maxScroll <= 0) return;
-                    const fraction = carousel.scrollLeft / maxScroll;
-                    const activeIndex = Math.round(fraction * (dots.length - 1));
-                    dots.forEach((d, i) => {
-                        d.classList.toggle('active', i === activeIndex);
-                        d.classList.toggle('inactive', i !== activeIndex);
-                    });
-                }, { passive: true });
-            }, 0);
         }
 
-        function showToast(msg, type) {
-            const existing = document.getElementById('feedback-toast');
-            if (existing) existing.remove();
-            const toast = document.createElement('div');
-            toast.id = 'feedback-toast';
-            const color = type === 'error' ? 'bg-red-700' : 'bg-green-700';
-            toast.className = `fixed bottom-8 left-1/2 ${color} text-white px-5 py-3 rounded-full font-bold text-sm shadow-2xl z-50 toast-enter flex items-center gap-2 whitespace-nowrap`;
-            toast.style.transform = 'translateX(-50%)';
-            toast.innerHTML = type === 'error'
-                ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-4 h-4 shrink-0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> ${msg}`
-                : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-4 h-4 shrink-0"><polyline points="20 6 9 17 4 12"/></svg> ${msg}`;
-            document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.classList.remove('toast-enter');
-                toast.classList.add('toast-exit');
-                setTimeout(() => toast.remove(), 280);
-            }, 1100);
-        }
-
-        // --- Funções Lógicas de Interação ---
+        // --- Funções de Lógica ---
         
         window.startApp = () => {
             isIntro = false;
+            bgMusic.play().catch(e => console.warn("Música de fundo bloqueada pelo navegador antes de interação."));
+            playRandomSound(); // Toca ao iniciar
             renderApp();
         };
 
@@ -651,17 +559,17 @@
             
             if (opt.type === 'correct') {
                 isCured = true;
+                playRandomSound(); // Toca som feliz/aleatório ao acertar
                 renderApp();
-                showToast('Prescrição correta!', 'success');
             } else {
                 glitchError = true;
+                playSadSound(); // Toca som triste específico ao errar
                 renderApp();
-                showToast('Prescrição incorreta! Tente outra opção.', 'error');
                 setTimeout(() => {
                     glitchError = false;
                     selectedOptionId = null;
                     renderApp();
-                }, 1200);
+                }, 1500); // Mais tempo para o público ver o erro no palco
             }
         };
 
@@ -671,10 +579,11 @@
                 isCured = false;
                 selectedOptionId = null;
                 currentShuffledOptions = shuffle(scenarios[currentStep].options);
+                playRandomSound(); // Toca ao aparecer novo problema
                 renderApp();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
                 flowComplete = true;
+                playRandomSound(); // Toca na tela de alta
                 renderApp();
             }
         };
@@ -685,69 +594,39 @@
             isCured = false;
             selectedOptionId = null;
             flowComplete = false;
-            document.body.classList.remove('bg-final');
             currentShuffledOptions = shuffle(scenarios[currentStep].options);
+            // Não toca som aqui para respeitar regras de autoplay do browser na tela inicial
             renderApp();
         };
 
-        // --- Fullscreen helper ---
-        window.toggleFullscreen = () => {
-            if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
-            else document.exitFullscreen();
-        };
-
-        // --- Teclado: navegação para apresentador (telão) ---
+        // --- ATALHOS DE TECLADO PARA O PALCO (CLICKER) ---
         document.addEventListener('keydown', (e) => {
             if (isLoading) return;
 
-            // Avançar: Space, Enter, ArrowRight
-            if (['Space', 'Enter', 'ArrowRight'].includes(e.code)) {
+            // ESPAÇO / ENTER: Avançar ou Iniciar
+            if (e.code === 'Space' || e.code === 'Enter') {
                 e.preventDefault();
-                if (isIntro) window.startApp();
-                else if (flowComplete) window.reboot();
-                else if (isCured) window.next();
+                if (isIntro) {
+                    window.startApp();
+                } else if (flowComplete) {
+                    window.reboot();
+                } else if (isCured) {
+                    window.next();
+                }
                 return;
             }
 
-            // Selecionar prescrição: 1/2/3 (posição visual no carrossel)
-            if (!isCured && !isIntro && !flowComplete && selectedOptionId === null) {
-                const keyMap = { 'Digit1': 0, 'Digit2': 1, 'Digit3': 2 };
-                const idx = keyMap[e.code];
-                if (idx !== undefined && currentShuffledOptions[idx]) {
-                    window.select(currentShuffledOptions[idx].id);
-                }
+            // TECLAS 1, 2, 3: Votar nas receitas
+            if (!isIntro && !flowComplete && !isCured && selectedOptionId === null) {
+                if (e.key === '1') window.select(currentShuffledOptions[0].id);
+                if (e.key === '2') window.select(currentShuffledOptions[1].id);
+                if (e.key === '3') window.select(currentShuffledOptions[2].id);
             }
-
-            // Fullscreen: F
-            if (e.code === 'KeyF') window.toggleFullscreen();
         });
 
-        // --- Botão Fullscreen (fixo, visível apenas em xl) ---
-        (function injectFullscreenButton() {
-            const btn = document.createElement('button');
-            btn.id = 'fs-btn';
-            btn.tabIndex = -1;
-            btn.title = 'Tela Cheia (F)';
-            btn.className = 'hidden xl:flex fixed top-3 right-4 z-[200] items-center gap-2 bg-[#2e1e14]/70 hover:bg-[#2e1e14] backdrop-blur-sm text-[#fdf6e3]/60 hover:text-[#fdf6e3] px-3 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest shadow-lg transition-all border border-[#fdf6e3]/10';
-            btn.innerHTML = `
-                <svg id="fs-icon-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-3.5 h-3.5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-                <svg id="fs-icon-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-3.5 h-3.5 hidden"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>
-                <span id="fs-label">Tela Cheia</span>`;
-            btn.addEventListener('click', window.toggleFullscreen);
-            document.addEventListener('fullscreenchange', () => {
-                const isFs = !!document.fullscreenElement;
-                document.getElementById('fs-icon-enter').classList.toggle('hidden', isFs);
-                document.getElementById('fs-icon-exit').classList.toggle('hidden', !isFs);
-                document.getElementById('fs-label').textContent = isFs ? 'Sair' : 'Tela Cheia';
-            });
-            document.body.appendChild(btn);
-        })();
-
-        // Inicia a aplicação
+        // Inicia preloading e render da tela de loading
         currentShuffledOptions = shuffle(scenarios[currentStep].options);
         renderApp();
-
-        // Iniciar o pré-carregamento imediatamente após a primeira renderização
         preloadImages();
     </script>
 </body>
