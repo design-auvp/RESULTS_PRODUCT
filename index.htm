@@ -28,18 +28,23 @@
                             '75%': { transform: 'translateX(8px) rotate(2deg)' }
                         },
                         fadeIn: {
-                            from: { opacity: 0, transform: 'translateY(30px)' },
+                            from: { opacity: 0, transform: 'translateY(3vh)' },
                             to: { opacity: 1, transform: 'translateY(0)' }
                         },
                         popIn: {
                             from: { opacity: 0, transform: 'scale(0.9)' },
                             to: { opacity: 1, transform: 'scale(1)' }
+                        },
+                        breathe: {
+                            '0%, 100%': { transform: 'scale(1)' },
+                            '50%': { transform: 'scale(1.04)' }
                         }
                     },
                     animation: {
                         shake: 'shake 0.2s ease-in-out 3',
                         fadeIn: 'fadeIn 0.8s ease-out forwards',
-                        popIn: 'popIn 0.5s ease-out forwards'
+                        popIn: 'popIn 0.5s ease-out forwards',
+                        breathe: 'breathe 4s ease-in-out infinite'
                     }
                 }
             }
@@ -47,7 +52,7 @@
     </script>
 
     <style>
-        /* Bloqueia qualquer scroll - Perfeito para apresentações num telão 1080p */
+        /* Bloqueia qualquer scroll geral e usa Viewport-based sizing */
         body, html {
             margin: 0;
             padding: 0;
@@ -56,7 +61,7 @@
             overflow: hidden;
             /* Fundo Verde Escuro */
             background: radial-gradient(circle at center, #064e3b 0%, #022c22 100%);
-            user-select: none; /* Evita selecionar texto sem querer no palco */
+            user-select: none;
         }
 
         /* --- Animações das Imagens do Jorginho --- */
@@ -94,15 +99,17 @@
             animation: write-effect 1.5s ease-out forwards;
         }
 
-        /* Fundo Final Verde Escuro */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
         .bg-final {
             background: radial-gradient(circle at center, #064e3b 0%, #022c22 100%) !important;
         }
 
-        /* Sombras profundas para o telão */
         .stage-shadow {
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
         }
+        
         .paper-texture {
             background-color: #fdf6e3;
             position: relative;
@@ -121,7 +128,7 @@
 </head>
 <body class="text-[#451a03]">
 
-    <div id="app" class="w-screen h-screen flex flex-col p-6 lg:p-10 relative">
+    <div id="app" class="w-screen h-screen flex flex-col p-[4vh] relative">
         <!-- O conteúdo será injetado pelo JS -->
     </div>
 
@@ -141,7 +148,7 @@
 
         const bgMusic = new Audio(bgMusicUrl);
         bgMusic.loop = true;
-        bgMusic.volume = 0.1; // Volume bem baixinho para não atrapalhar a palestra
+        bgMusic.volume = 0.1;
 
         const sadAudio = new Audio(sadSoundUrl);
         const generalAudios = randomSoundUrls.map(url => new Audio(url));
@@ -150,14 +157,12 @@
 
         function playSadSound() {
             sadAudio.currentTime = 0;
-            sadAudio.play().catch(e => console.warn("Áudio bloqueado pelo navegador antes de interação."));
+            sadAudio.play().catch(e => console.warn("Áudio bloqueado."));
         }
 
         function playRandomSound() {
             if (soundQueue.length === 0) {
-                // Reabastecer a fila embaralhada
                 let newQueue = shuffle([...generalAudios]);
-                // Evitar repetição imediata do último som tocado
                 if (newQueue[0] === lastPlayedAudio) {
                     [newQueue[0], newQueue[1]] = [newQueue[1], newQueue[0]];
                 }
@@ -167,7 +172,7 @@
             const audioToPlay = soundQueue.shift();
             lastPlayedAudio = audioToPlay;
             audioToPlay.currentTime = 0;
-            audioToPlay.play().catch(e => console.warn("Áudio bloqueado pelo navegador antes de interação."));
+            audioToPlay.play().catch(e => console.warn("Áudio bloqueado."));
         }
 
         // --- Pré-carregamento de Imagens ---
@@ -202,20 +207,21 @@
             });
         }
 
-        // --- Ícones SVG ---
+        // --- Ícones SVG com tamanho baseado em VH ---
+        const iconClass = "w-[4vh] h-[4vh]";
         const icons = {
-            design: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-8 h-8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="m14 14-2-2m-2-2 2 2m0 0 2-2m-2 2-2 2"/></svg>`,
-            product: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-8 h-8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`,
-            intelligence: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-8 h-8"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
-            strategy: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-8 h-8"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>`,
-            community: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-8 h-8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
-            cx: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-8 h-8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+            design: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="${iconClass}"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="m14 14-2-2m-2-2 2 2m0 0 2-2m-2 2-2 2"/></svg>`,
+            product: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="${iconClass}"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`,
+            intelligence: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="${iconClass}"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
+            strategy: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="${iconClass}"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>`,
+            community: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="${iconClass}"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+            cx: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="${iconClass}"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
         };
 
         const scenarios = [
             {
                 id: 1, title: "Pelo Sujo e Mal Cuidado", icon: icons.design,
-                symptom: "O Jorginho tá com o pelo feio, embaraçado, caindo… ninguém quer chegar perto dele.",
+                symptom: "O Jorginho tá com o pelo feio, embaraçado, sujo… ninguém quer chegar perto dele.",
                 visualState: "dirty",
                 options: [
                     { id: 'A', text: "Colocar uma roupinha por cima para esconder a sujeira.", type: "wrong" },
@@ -293,7 +299,6 @@
             }
         ];
 
-        // Estados do App
         let isIntro = true;
         let currentStep = 0;
         let selectedOptionId = null;
@@ -311,24 +316,22 @@
             return newArray;
         }
 
-        // --- Renderizadores de Elementos ---
-
         function renderCatImage(state, isCuredFlag, isError) {
-            let containerClasses = "relative w-full h-full flex items-center justify-center z-10 hover:z-50";
+            let containerClasses = "relative w-full h-full flex items-center justify-center z-10";
             
             if (isError) {
                 return `
                 <div class="${containerClasses} animate-shake">
-                    <div class="absolute inset-0 bg-red-600/20 rounded-full blur-[100px]"></div>
-                    <img src="${imgBase}TRIST%C3%83O.png" alt="Gato Triste" class="max-w-full max-h-full object-contain drop-shadow-[0_30px_50px_rgba(0,0,0,0.5)] relative z-20 origin-center transition-transform duration-500 scale-105" />
+                    <div class="absolute inset-0 bg-red-600/20 rounded-full blur-[10vh]"></div>
+                    <img src="${imgBase}TRIST%C3%83O.png" alt="Gato Triste" class="max-w-[100%] max-h-[100%] object-contain drop-shadow-[0_3vh_5vh_rgba(0,0,0,0.5)] relative z-20 origin-center scale-[1.10]" />
                 </div>`;
             }
 
             if (isCuredFlag) {
                 return `
                 <div class="${containerClasses} animate-popIn">
-                    <div class="absolute inset-0 bg-emerald-500/30 rounded-full blur-[100px]"></div>
-                    <div class="w-full h-full animate-happy drop-shadow-[0_30px_50px_rgba(0,0,0,0.5)] relative z-20 origin-center scale-105"></div>
+                    <div class="absolute inset-0 bg-emerald-500/30 rounded-full blur-[10vh]"></div>
+                    <div class="w-full h-full animate-happy drop-shadow-[0_3vh_5vh_rgba(0,0,0,0.5)] relative z-20 origin-center scale-[1.10]"></div>
                 </div>`;
             }
 
@@ -345,109 +348,97 @@
 
             return `
             <div class="${containerClasses} animate-popIn">
-                <div class="absolute inset-0 bg-[#8b5a2b]/20 rounded-full blur-[100px]"></div>
-                <img src="${imgBase}${imgSrc}" alt="Paciente Jorginho" class="max-w-full max-h-full object-contain drop-shadow-[0_30px_50px_rgba(0,0,0,0.4)] relative z-20 origin-center transition-transform duration-500 hover:scale-110" />
+                <div class="absolute inset-0 bg-[#8b5a2b]/20 rounded-full blur-[10vh]"></div>
+                <img src="${imgBase}${imgSrc}" alt="Paciente Jorginho" class="max-w-[100%] max-h-[100%] object-contain drop-shadow-[0_3vh_5vh_rgba(0,0,0,0.4)] relative z-20 origin-center animate-breathe" />
             </div>`;
         }
 
         function renderApp() {
             const container = document.getElementById('app');
 
-            // --- 1. TELA DE INTRODUÇÃO (RAIO X) ---
             if (isIntro) {
                 container.innerHTML = `
-                <div class="flex flex-col items-center justify-center w-full h-full animate-fadeIn text-center">
-                    <h1 class="text-6xl lg:text-8xl font-bold text-white mb-6 font-serif drop-shadow-2xl">Clinica de Produto</h1>
-                    <p class="text-2xl text-[#e6d5a1] mb-12 font-serif italic tracking-widest uppercase">Conheça nosso time!</p>
+                <div class="flex flex-col items-center justify-center w-full h-full animate-fadeIn text-center cursor-pointer transition-colors hover:bg-white/5 rounded-2xl" onclick="if(!isLoading) window.startApp()">
+                    <h1 class="text-[10vh] font-bold text-white mb-[2vh] font-serif drop-shadow-2xl">Clinica de Produto</h1>
+                    <p class="text-[3.5vh] text-[#e6d5a1] mb-[6vh] font-serif italic tracking-widest uppercase">Conheça nosso time!</p>
                     
-                    <!-- Fundo do Raio X Escuro e Realista -->
-                    <div class="relative w-[500px] h-[500px] lg:w-[700px] lg:h-[700px] max-h-[50vh] max-w-[50vh] mx-auto bg-slate-900 rounded-full stage-shadow border-[12px] border-slate-800 overflow-hidden z-10 mb-12 shadow-[inset_0_0_50px_rgba(0,0,0,0.8)]">
-                        <!-- Grelha de monitor médico ao fundo -->
-                        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
-
-                        <!-- Gato Original com mais destaque e contraste -->
-                        <img src="${imgBase}ORIGINAL.png" alt="Gato Original" class="absolute inset-0 w-full h-full object-contain p-10 opacity-70 drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]" />
+                    <div class="relative w-[55vh] h-[55vh] mx-auto bg-slate-900 rounded-full stage-shadow border-[1.5vh] border-slate-800 overflow-hidden z-10 mb-[6vh] shadow-[inset_0_0_5vh_rgba(0,0,0,0.8)]">
+                        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:2vh_2vh]"></div>
+                        <img src="${imgBase}ORIGINAL.png" alt="Gato Original" class="absolute inset-0 w-full h-full object-contain p-[4vh] opacity-70 drop-shadow-[0_0_2vh_rgba(255,255,255,0.2)] animate-breathe" />
                         
-                        <div class="absolute inset-0 w-full h-full p-10 animate-scanline z-20 pointer-events-none">
+                        <div class="absolute inset-0 w-full h-full p-[4vh] animate-scanline z-20 pointer-events-none">
                             <div class="relative w-full h-full">
-                                <!-- Raio X em modo Screen para brilhar sobre o fundo escuro -->
-                                <img src="${imgBase}RAIO%20X.png" alt="Raio X" class="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(34,211,238,0.8)] mix-blend-screen brightness-110" />
-                                <div class="absolute bottom-0 left-0 w-full h-2 bg-cyan-400 shadow-[0_0_30px_10px_rgba(34,211,238,1)]"></div>
+                                <img src="${imgBase}RAIO%20X.png" alt="Raio X" class="w-full h-full object-contain drop-shadow-[0_0_2vh_rgba(34,211,238,0.8)] mix-blend-screen brightness-110" />
+                                <div class="absolute bottom-0 left-0 w-full h-[0.5vh] bg-cyan-400 shadow-[0_0_3vh_1vh_rgba(34,211,238,1)]"></div>
                             </div>
                         </div>
                     </div>
 
                     ${isLoading ? `
-                    <div class="w-[600px] mx-auto">
-                        <div class="flex justify-between text-[#e6d5a1] text-xl font-bold font-mono mb-4 uppercase tracking-widest">
+                    <div class="w-[60vh] mx-auto">
+                        <div class="flex justify-between text-[#e6d5a1] text-[2.5vh] font-bold font-mono mb-[1.5vh] uppercase tracking-widest">
                             <span>Carregando Assets...</span><span id="progress-text">${loadProgress}%</span>
                         </div>
-                        <div class="w-full h-4 bg-[#022c22] rounded-full overflow-hidden border border-[#064e3b] shadow-inner">
+                        <div class="w-full h-[1.5vh] bg-[#022c22] rounded-full overflow-hidden border border-[#064e3b] shadow-inner">
                             <div id="progress-bar" class="h-full bg-gradient-to-r from-[#10b981] to-[#34d399]" style="width: ${loadProgress}%"></div>
                         </div>
                     </div>
                     ` : `
-                    <div class="animate-pulse text-[#e6d5a1] text-3xl font-bold tracking-widest font-mono uppercase mt-4">
-                        [ Pressione ESPAÇO para Iniciar ]
+                    <div class="animate-pulse text-[#e6d5a1] text-[3vh] font-bold tracking-widest font-mono uppercase bg-[#022c22]/50 px-[6vh] py-[1.5vh] rounded-full border border-[#e6d5a1]/20">
+                        [ Iniciar ]
                     </div>
                     `}
                 </div>`;
                 return;
             }
 
-            // --- 2. TELA FINAL (ALTA MÉDICA) ---
             if (flowComplete) {
                 container.innerHTML = `
-                <div class="flex flex-col items-center justify-center w-full h-full animate-fadeIn text-center">
-                    <h1 class="text-7xl lg:text-8xl font-bold text-white mb-6 font-serif drop-shadow-2xl">Alta Médica Total</h1>
-                    <p class="text-3xl text-[#e6d5a1] mb-16 font-serif max-w-5xl mx-auto leading-relaxed">
+                <div class="flex flex-col items-center justify-center w-full h-full animate-fadeIn text-center cursor-pointer transition-colors hover:bg-white/5 rounded-2xl" onclick="window.reboot()">
+                    <h1 class="text-[10vh] font-bold text-white mb-[4vh] font-serif drop-shadow-2xl">Alta Médica Total</h1>
+                    <p class="text-[3.5vh] text-[#e6d5a1] mb-[8vh] font-serif max-w-[120vh] mx-auto leading-relaxed">
                         O Jorginho está 100% curado e a estrutura do negócio está otimizada.<br>Um produto saudável atrai sempre novos habitantes.
                     </p>
                     
-                    <div class="relative w-[500px] h-[500px] lg:w-[700px] lg:h-[700px] max-h-[50vh] max-w-[50vh] mx-auto z-10 mb-12">
-                        <div class="absolute inset-0 bg-amber-500/40 rounded-full blur-[120px]"></div>
-                        <img src="${imgBase}ORIGINAL.png" alt="Gato Original" class="w-full h-full object-contain drop-shadow-[0_40px_60px_rgba(0,0,0,0.6)] relative z-10" />
+                    <div class="relative w-[55vh] h-[55vh] mx-auto z-10 mb-[8vh]">
+                        <div class="absolute inset-0 bg-amber-500/40 rounded-full blur-[12vh]"></div>
+                        <img src="${imgBase}ORIGINAL.png" alt="Gato Original" class="w-full h-full object-contain drop-shadow-[0_4vh_6vh_rgba(0,0,0,0.6)] relative z-10 animate-breathe origin-center" />
                     </div>
                     
-                    <div class="animate-pulse text-[#e6d5a1] text-3xl font-bold tracking-widest font-mono uppercase">
-                        [ Pressione ESPAÇO para Nova Avaliação ]
+                    <div class="animate-pulse text-[#e6d5a1] text-[3vh] font-bold tracking-widest font-mono uppercase bg-[#022c22]/50 px-[6vh] py-[1.5vh] rounded-full border border-[#e6d5a1]/20">
+                        [ Nova Avaliação ]
                     </div>
                 </div>`;
                 return;
             }
 
-            // --- 3. TELA DO DIAGNÓSTICO (LAYOUT 1080p - ECRÃ INTEIRO) ---
             const s = scenarios[currentStep];
             
-            // Área de Receitas (Bottom 35%)
             let optionsHTML = currentShuffledOptions.map((opt, i) => {
                 const isSel = selectedOptionId === opt.id;
                 const isDisabled = selectedOptionId !== null;
                 const dimClass = isDisabled && !isSel ? 'opacity-30 grayscale' : '';
-                const selectedClass = isSel ? 'scale-[1.03] -translate-y-4 z-40' : '';
-                const hoverClass = !isDisabled ? 'hover:-translate-y-4 hover:shadow-[0_20px_40px_rgba(0,0,0,0.6)]' : '';
+                const selectedClass = isSel ? 'scale-[1.03] -translate-y-[2vh] z-40' : '';
 
                 return `
-                <div class="flex-1 h-full flex flex-col transition-all duration-500 origin-bottom ${dimClass} ${selectedClass} ${hoverClass}">
-                    <div class="w-full h-full bg-[#fcfcfc] rounded-lg stage-shadow border border-[#cbd5e1] flex flex-col overflow-hidden relative">
-                        <!-- Topo da Receita -->
-                        <div class="h-10 bg-blue-900 w-full flex items-center px-6 justify-between shrink-0">
-                            <span class="text-white text-base font-bold tracking-widest uppercase">Receituário [ ${i + 1} ]</span>
-                            <span class="text-blue-200 text-sm font-serif italic">Clínica AUVP</span>
+                <div class="flex-1 h-full flex flex-col transition-all duration-500 origin-bottom cursor-pointer ${dimClass} ${selectedClass}" onclick="${!isDisabled ? `window.select('${opt.id}')` : ''}">
+                    <div class="w-full h-full bg-[#fcfcfc] rounded-[2vh] stage-shadow border-[0.2vh] border-[#cbd5e1] flex flex-col overflow-hidden relative">
+                        <div class="h-[5vh] bg-blue-900 w-full flex items-center px-[3vh] justify-between shrink-0">
+                            <span class="text-white text-[1.8vh] font-bold tracking-widest uppercase">Receituário [ ${i + 1} ]</span>
+                            <span class="text-blue-200 text-[1.6vh] font-serif italic">Clínica AUVP</span>
                         </div>
                         
-                        <!-- Corpo da Receita -->
-                        <div class="p-6 lg:p-8 flex-grow flex flex-col relative bg-[linear-gradient(transparent_95%,_#e5e7eb_95%)] bg-[length:100%_3rem] overflow-y-auto hide-scrollbar">
-                            <div class="text-blue-900 font-serif text-5xl font-bold opacity-10 absolute top-6 left-6 pointer-events-none">Rx</div>
+                        <div class="p-[3vh] flex-grow flex flex-col relative bg-[linear-gradient(transparent_95%,_#e5e7eb_95%)] bg-[length:100%_5vh] overflow-y-auto hide-scrollbar">
+                            <div class="text-blue-900 font-serif text-[6vh] font-bold opacity-10 absolute top-[2vh] left-[3vh] pointer-events-none">Rx</div>
                             
-                            <p class="font-handwriting text-3xl lg:text-4xl leading-[2.5rem] lg:leading-[3rem] mt-6 lg:mt-8 z-10 px-2 lg:px-4 ${!isDisabled ? 'animate-write' : 'text-blue-800'}" ${!isDisabled ? `style="animation-delay: ${0.2 + (i * 0.15)}s;"` : ''}>
+                            <p class="font-handwriting text-[4vh] leading-[5vh] mt-[3vh] z-10 px-[2vh] ${!isDisabled ? 'animate-write' : 'text-blue-800'}" ${!isDisabled ? `style="animation-delay: ${0.2 + (i * 0.15)}s;"` : ''}>
                                 ${opt.text}
                             </p>
                             
                             ${isSel ? `
-                            <div class="absolute bottom-8 right-8 z-30 transform -rotate-12 animate-popIn">
-                                <div class="border-[6px] ${opt.type === 'correct' ? 'border-green-600 text-green-600' : 'border-red-600 text-red-600'} rounded-xl px-6 py-2 bg-white/95 shadow-xl">
-                                    <span class="font-bold uppercase tracking-widest text-3xl opacity-90">
+                            <div class="absolute bottom-[2vh] right-[2vh] z-30 transform -rotate-12 animate-popIn">
+                                <div class="border-[0.6vh] ${opt.type === 'correct' ? 'border-green-600 text-green-600' : 'border-red-600 text-red-600'} rounded-[1.5vh] px-[2vh] py-[1vh] bg-white/95 shadow-xl">
+                                    <span class="font-bold uppercase tracking-widest text-[2.5vh] opacity-90">
                                         ${opt.type === 'correct' ? 'APROVADO' : 'RECUSADO'}
                                     </span>
                                 </div>
@@ -459,83 +450,80 @@
             }).join('');
 
             container.innerHTML = `
-            <div class="w-full h-full flex flex-col gap-6 lg:gap-8">
+            <div class="w-full h-full flex flex-col gap-[3vh]">
                 
-                <!-- TOP SECTION: GATO + PRONTUÁRIO (65% Altura) -->
-                <div class="flex-grow flex gap-6 lg:gap-8 min-h-0 relative">
+                <!-- TOP SECTION: GATO + PRONTUÁRIO -->
+                <div class="flex-grow flex gap-[3vh] min-h-0 relative">
                     
-                    <!-- LEFT: Gatinho Gigante -->
-                    <div class="w-[45%] h-full flex items-center justify-center relative">
+                    <div class="w-[35%] h-full flex items-center justify-center relative translate-y-[6vh]">
                         ${renderCatImage(s.visualState, isCured, glitchError)}
                     </div>
                     
-                    <!-- RIGHT: Prontuário Médico Enorme -->
-                    <div class="w-[55%] h-full paper-texture rounded-2xl stage-shadow border-2 border-[#e6d5a1] flex flex-col p-6 lg:p-10 relative overflow-y-auto hide-scrollbar">
+                    <div class="w-[65%] h-full paper-texture rounded-[3vh] stage-shadow border-[0.3vh] border-[#e6d5a1] flex flex-col p-[4vh] relative overflow-hidden">
                         
-                        <!-- Clip do Prontuário -->
-                        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[30%] h-10 bg-gradient-to-b from-[#cbd5e1] to-[#94a3b8] border-b border-x border-[#64748b] rounded-b-xl shadow-lg flex items-center justify-center z-20">
-                            <div class="w-2/3 h-2 bg-[#475569] shadow-inner rounded-full"></div>
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[30%] h-[4vh] bg-gradient-to-b from-[#cbd5e1] to-[#94a3b8] border-b border-x border-[#64748b] rounded-b-[2vh] shadow-lg flex items-center justify-center z-20">
+                            <div class="w-2/3 h-[0.8vh] bg-[#475569] shadow-inner rounded-full"></div>
                         </div>
 
-                        <!-- Header Prontuário -->
-                        <div class="mt-6 flex justify-between items-end border-b-[3px] border-[#8b5a2b]/30 pb-4 shrink-0">
+                        <div class="mt-[2vh] flex justify-between items-end border-b-[0.4vh] border-[#8b5a2b]/30 pb-[2vh] shrink-0">
                             <div>
-                                <h2 class="text-3xl lg:text-5xl font-bold uppercase tracking-widest text-[#451a03] font-serif">${s.title}</h2>
-                                <div class="flex items-center gap-3 mt-2 text-xl lg:text-2xl font-bold text-[#8b5a2b] uppercase tracking-widest">
+                                <h2 class="text-[4vh] font-bold uppercase tracking-widest text-[#451a03] font-serif leading-tight">${s.title}</h2>
+                                <div class="flex items-center gap-[1vh] mt-[1vh] text-[2.5vh] font-bold text-[#8b5a2b] uppercase tracking-widest">
                                     ${s.icon} <span>${s.department}</span>
                                 </div>
                             </div>
-                            <span class="bg-[#8b5a2b]/10 px-4 py-2 lg:px-6 lg:py-2 rounded-lg text-lg lg:text-xl font-bold text-[#8b5a2b] font-mono border border-[#8b5a2b]/20">
+                            <span class="bg-[#8b5a2b]/10 px-[3vh] py-[1vh] rounded-[1.5vh] text-[2.5vh] font-bold text-[#8b5a2b] font-mono border border-[#8b5a2b]/20">
                                 Ficha: 0${currentStep + 1}
                             </span>
                         </div>
 
-                        <!-- Corpo Prontuário -->
-                        <div class="flex-grow flex flex-col justify-center mt-4">
+                        <div class="flex-grow flex flex-col justify-start mt-[2vh] pb-[1vh]">
                             ${!isCured ? `
-                            <!-- Estado Sintoma -->
-                            <div class="font-mono text-[#451a03] text-xl lg:text-2xl space-y-4 lg:space-y-5">
-                                <div class="flex justify-between border-b-2 border-[#8b5a2b]/10 pb-3">
+                            <div class="font-mono text-[#451a03] text-[2.5vh] flex-grow flex flex-col justify-start space-y-[2vh] pt-[1vh]">
+                                <div class="flex justify-between border-b-[0.2vh] border-[#8b5a2b]/10 pb-[1vh]">
                                     <span class="font-bold">Paciente:</span> <span>Jorginho</span>
                                 </div>
-                                <div class="flex justify-between border-b-2 border-[#8b5a2b]/10 pb-3">
+                                <div class="flex justify-between border-b-[0.2vh] border-[#8b5a2b]/10 pb-[1vh]">
                                     <span class="font-bold">Espécie:</span> <span>Felis Corporativus</span>
                                 </div>
                                 
-                                <div class="mt-6 lg:mt-8 bg-[#8b5a2b]/5 p-6 lg:p-8 rounded-xl border border-[#8b5a2b]/10 relative shadow-inner">
-                                    <span class="absolute -top-4 left-6 bg-[#fdf6e3] px-3 py-1 font-bold text-red-600 text-lg animate-pulse border-2 border-red-200 rounded-md">URGENTE: SINTOMAS</span>
-                                    <p class="leading-relaxed mt-2 italic text-[#5c4033] font-sans font-semibold">
+                                <div class="flex-grow mt-[2vh] bg-[#8b5a2b]/5 p-[4vh] rounded-[2vh] border-[0.2vh] border-[#8b5a2b]/10 relative shadow-inner flex items-center justify-center text-center">
+                                    <span class="absolute -top-[2.5vh] left-[4vh] bg-[#fdf6e3] px-[2vh] py-[0.5vh] font-bold text-red-600 text-[2vh] animate-pulse border-[0.2vh] border-red-200 rounded-[1vh]">URGENTE: SINTOMAS</span>
+                                    <p class="leading-[1.4] italic text-[#5c4033] font-sans font-semibold text-[4vh] w-full">
                                         "${s.symptom}"
                                     </p>
                                 </div>
                             </div>
                             ` : `
-                            <!-- Estado Curado (Resultados) -->
-                            <div class="font-sans text-[#451a03] flex-grow flex flex-col justify-center animate-fadeIn space-y-4 lg:space-y-6">
-                                <div>
-                                    <span class="inline-block bg-green-100 text-green-800 text-lg px-4 py-2 rounded font-bold uppercase tracking-widest mb-2 border-2 border-green-400 shadow-sm">Tratamento Bem-Sucedido</span>
+                            <div class="font-sans text-[#451a03] flex-grow flex flex-col justify-center animate-fadeIn py-[2vh] gap-[4vh]">
+                                
+                                <div class="flex flex-col items-start relative">
+                                    <span class="inline-block bg-[#d1fae5] text-[#065f46] text-[1.8vh] px-[2vh] py-[0.8vh] rounded-[1vh] font-bold uppercase tracking-widest border-[0.2vh] border-[#a7f3d0] shadow-sm mb-[2vh]">
+                                        Tratamento Bem-Sucedido
+                                    </span>
+                                    
+                                    <p class="text-[3.5vh] leading-[1.6] border-l-[0.8vh] border-[#8b5a2b] pl-[3vh] text-[#5c4033] font-serif">
+                                        ${s.explanation}
+                                    </p>
                                 </div>
                                 
-                                <p class="text-2xl lg:text-3xl leading-relaxed border-l-[6px] border-[#8b5a2b] pl-6 text-[#5c4033] font-serif">
-                                    ${s.explanation}
-                                </p>
-                                
-                                <div class="bg-black/5 p-6 lg:p-8 rounded-xl italic text-[#5c4033] border-2 border-[#8b5a2b]/10 shadow-inner mt-4 lg:mt-6">
-                                    <strong class="uppercase text-[#b45309] text-xl tracking-widest block mb-2 font-sans not-italic">No Mundo Real:</strong> 
-                                    <span class="text-2xl lg:text-3xl font-medium">"${s.realWorld}"</span>
+                                <div class="bg-black/5 p-[4vh] rounded-[2vh] italic text-[#5c4033] border-[0.2vh] border-[#8b5a2b]/10 shadow-inner">
+                                    <strong class="uppercase text-[#b45309] text-[2.5vh] tracking-widest block mb-[1.5vh] font-sans not-italic">No Mundo Real:</strong> 
+                                    <span class="text-[3.5vh] font-medium leading-snug">"${s.realWorld}"</span>
                                 </div>
+                                
                             </div>
                             `}
                         </div>
                     </div>
                 </div>
 
-                <!-- BOTTOM SECTION: RECEITAS (35% Altura) -->
-                <div class="h-[30vh] shrink-0 w-full relative z-30 flex gap-6 lg:gap-8">
+                <!-- BOTTOM SECTION: AQUI OCORRE A ANIMAÇÃO DINÂMICA DE TAMANHO -->
+                <div class="${!isCured ? 'h-[26vh]' : 'h-[10vh]'} shrink-0 w-full relative z-30 flex gap-[3vh] transition-all duration-700 ease-in-out">
                     ${!isCured ? optionsHTML : `
-                    <div class="w-full h-full flex flex-col items-center justify-center animate-fadeIn">
-                        <div class="animate-pulse text-[#e6d5a1] text-4xl font-bold tracking-widest font-mono uppercase bg-[#2e1e14]/50 px-12 py-6 rounded-2xl border-2 border-[#e6d5a1]/30">
-                            [ Pressione ESPAÇO para o Próximo Diagnóstico ]
+                    <div class="w-full h-full flex flex-col items-center justify-center animate-fadeIn cursor-pointer" onclick="window.next()">
+                        <div class="animate-pulse text-[#e6d5a1] text-[2.5vh] font-bold tracking-widest font-mono uppercase bg-[#2e1e14]/70 px-[4vh] py-[1.5vh] rounded-[1.5vh] border-[0.2vh] border-[#e6d5a1]/30 hover:bg-[#2e1e14]/90 transition-colors text-center shadow-xl">
+                            [ ${currentStep < scenarios.length - 1 ? 'Próximo Diagnóstico' : 'Finalizar Expediente'} ]
                         </div>
                     </div>
                     `}
@@ -543,12 +531,10 @@
             </div>`;
         }
 
-        // --- Funções de Lógica ---
-        
         window.startApp = () => {
             isIntro = false;
-            bgMusic.play().catch(e => console.warn("Música de fundo bloqueada pelo navegador antes de interação."));
-            playRandomSound(); // Toca ao iniciar
+            bgMusic.play().catch(e => console.warn("Música bloqueada."));
+            playRandomSound(); 
             renderApp();
         };
 
@@ -559,17 +545,17 @@
             
             if (opt.type === 'correct') {
                 isCured = true;
-                playRandomSound(); // Toca som feliz/aleatório ao acertar
+                playRandomSound(); 
                 renderApp();
             } else {
                 glitchError = true;
-                playSadSound(); // Toca som triste específico ao errar
+                playSadSound(); 
                 renderApp();
                 setTimeout(() => {
                     glitchError = false;
                     selectedOptionId = null;
                     renderApp();
-                }, 1500); // Mais tempo para o público ver o erro no palco
+                }, 1500); 
             }
         };
 
@@ -579,11 +565,11 @@
                 isCured = false;
                 selectedOptionId = null;
                 currentShuffledOptions = shuffle(scenarios[currentStep].options);
-                playRandomSound(); // Toca ao aparecer novo problema
+                playRandomSound();
                 renderApp();
             } else {
                 flowComplete = true;
-                playRandomSound(); // Toca na tela de alta
+                playRandomSound();
                 renderApp();
             }
         };
@@ -595,15 +581,12 @@
             selectedOptionId = null;
             flowComplete = false;
             currentShuffledOptions = shuffle(scenarios[currentStep].options);
-            // Não toca som aqui para respeitar regras de autoplay do browser na tela inicial
             renderApp();
         };
 
-        // --- ATALHOS DE TECLADO PARA O PALCO (CLICKER) ---
         document.addEventListener('keydown', (e) => {
             if (isLoading) return;
 
-            // ESPAÇO / ENTER: Avançar ou Iniciar
             if (e.code === 'Space' || e.code === 'Enter') {
                 e.preventDefault();
                 if (isIntro) {
@@ -616,7 +599,6 @@
                 return;
             }
 
-            // TECLAS 1, 2, 3: Votar nas receitas
             if (!isIntro && !flowComplete && !isCured && selectedOptionId === null) {
                 if (e.key === '1') window.select(currentShuffledOptions[0].id);
                 if (e.key === '2') window.select(currentShuffledOptions[1].id);
@@ -624,7 +606,6 @@
             }
         });
 
-        // Inicia preloading e render da tela de loading
         currentShuffledOptions = shuffle(scenarios[currentStep].options);
         renderApp();
         preloadImages();
