@@ -146,12 +146,26 @@
             'https://raw.githubusercontent.com/design-auvp/RESULTS_PRODUCT/main/sound_garage-cat-meow-8-fx-306184.mp3'
         ];
 
+        // Boas práticas: Centralizar configuração de volumes
+        const VOLUMES = {
+            bgMusic: 0.05,  // Fundo muito suave (5%) para não competir com o microfone
+            sadMeow: 0.6,   // Volume do gato triste (60%)
+            happyMeow: 0.45 // Volume dos miados agudos (45%) para não estourar nas colunas
+        };
+
         const bgMusic = new Audio(bgMusicUrl);
         bgMusic.loop = true;
-        bgMusic.volume = 0.1;
+        bgMusic.volume = VOLUMES.bgMusic;
 
         const sadAudio = new Audio(sadSoundUrl);
-        const generalAudios = randomSoundUrls.map(url => new Audio(url));
+        sadAudio.volume = VOLUMES.sadMeow;
+
+        const generalAudios = randomSoundUrls.map(url => {
+            const audio = new Audio(url);
+            audio.volume = VOLUMES.happyMeow;
+            return audio;
+        });
+        
         let soundQueue = [];
         let lastPlayedAudio = null;
 
