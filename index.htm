@@ -244,12 +244,12 @@
                 symptom: "O Jorginho tá com o pelo feio, embaraçado, caindo... ninguém quer chegar perto dele.",
                 visualState: "dirty",
                 options: [
-                    { id: 'A', text: "Colocar uma roupinha por cima para esconder a sujeira (paliativo).", type: "wrong" },
+                    { id: 'A', text: "Colocar uma roupinha por cima para esconder a sujeira.", type: "wrong" },
                     { id: 'B', text: "Raspar o gato inteiro e deixar ele careca.", type: "wrong" },
                     { id: 'C', text: "Banho, escovação e vitaminas.", type: "correct" }
                 ],
                 department: "Time de Design",
-                explanation: "Essa é uma analogia clara com o nosso time de DESIGN. Se o visual é confuso, o cliente se afasta. Nós aplicamos essa \"cura\" quando refazemos o visual de plataformas, sites, criamos produtos físicos e artes de modo geral que passam credibilidade e confiança para o usuário.",
+                explanation: "Essa é uma analogia clara com o nosso time de DESIGN. Se o visual é confuso, o membro se afasta. Nós aplicamos essa \"cura\" quando refazemos o visual de plataformas, sites, criamos produtos físicos e artes de modo geral que passam credibilidade e confiança para o membro.",
                 realWorld: "Refizemos o site da AUVP Capital, criamos novos produtos físicos com caixas icônicas, otimizamos as ferramentas da AUVP."
             },
             {
@@ -275,7 +275,7 @@
                     { id: 'C', text: "Cirurgia de catarata para devolver o foco e a nitidez.", type: "correct" }
                 ],
                 department: "Inteligência de Produto",
-                explanation: "Isso é Inteligência de Produto. Nós usamos ferramentas de análise para entender o comportamento da nossa comunidade. Ao enxergar com clareza o que o aluno faz nas plataformas, conectamos a estratégia da empresa à realidade, parando de dar bote no escuro. Aqui performamos o finado valor P.A.F., novo impiedoso: analisamos os dados, pensamos devagar e implementamos rápido.",
+                explanation: "Isso é Inteligência de Produto. Nós usamos ferramentas de análise para entender o comportamento da nossa comunidade. Ao enxergar com clareza o que o membro faz nas plataformas, conectamos a estratégia da empresa à realidade, parando de dar bote no escuro. Aqui performamos o finado valor P.A.F., novo impiedoso: analisamos os dados, pensamos devagar e implementamos rápido.",
                 realWorld: "Estudamos a taxa de satisfação dos nossos produtos, analisamos os volumes de venda e cross sell, avaliamos a performance das nossas páginas e aplicações..."
             },
             {
@@ -301,7 +301,7 @@
                     { id: 'C', text: "Limpar os ouvidos e treinar a atenção.", type: "correct" }
                 ],
                 department: "Gestão de Comunidade",
-                explanation: "Essa é a nossa gestão de COMUNIDADE. É ouvir ativamente o cliente. Nós curamos a surdez do Jorginho analisando dados, conversando com os alunos e integrando os times de CS e Produto para garantir que estamos criando o que as pessoas REALMENTE PRECISAM.",
+                explanation: "Essa é a nossa gestão de COMUNIDADE. É ouvir ativamente o membro. Nós curamos a surdez do Jorginho analisando dados, conversando com os membros e integrando os times de CS e Produto para garantir que estamos criando o que as pessoas REALMENTE PRECISAM.",
                 realWorld: "Página de lives, otimização dos quizzes da AUVP Escola, ajuste no volume das aulas.. tudo isso a partir dos Feedbacks e análise de comportamento."
             },
             {
@@ -313,9 +313,9 @@
                     { id: 'B', text: "Trancar ele numa caixa pequena.", type: "wrong" },
                     { id: 'C', text: "Guiar com petiscos e criar um caminho iluminado.", type: "correct" }
                 ],
-                department: "Experiência do Cliente (CX)",
-                explanation: "Isso é a EXPERIÊNCIA DO CLIENTE. É o aluno não saber por onde começar. Nós curamos a desorientação através da nossa comunicação com alunos e do uso de dinâmicas como cartas e gamificação, pegando o cliente pela mão e mostrando o caminho.",
-                realWorld: "Onboarding melhorado, hub de produto aumentando a clareza sobre tudo o que o cliente pode ter na AUVP e o time de relacionamento."
+                department: "Experiência do Membro (CX)",
+                explanation: "Isso é a EXPERIÊNCIA DO MEMBRO. É o membro não saber por onde começar. Nós curamos a desorientação através da nossa comunicação com membros e do uso de dinâmicas como cartas e gamificação, pegando o membro pela mão e mostrando o caminho.",
+                realWorld: "Onboarding melhorado, hub de produto aumentando a clareza sobre tudo o que o membro pode ter na AUVP e o time de relacionamento."
             }
         ];
 
@@ -414,20 +414,32 @@
 
             if (flowComplete) {
                 container.innerHTML = `
-                <div class="flex flex-col items-center justify-center w-full min-h-screen lg:h-full animate-fadeIn text-center cursor-pointer" onclick="window.reboot()">
-                    <h1 class="text-4xl lg:text-[8vh] font-bold text-white mb-4 lg:mb-[4vh] font-serif drop-shadow-2xl px-4">Alta Médica Total</h1>
-                    <p class="text-lg lg:text-[3vh] text-[#e6d5a1] mb-8 lg:mb-[6vh] font-serif max-w-3xl lg:max-w-[120vh] mx-auto leading-relaxed px-6">
-                        O Jorginho está 100% curado e a estrutura do negócio está otimizada.<br class="hidden lg:block">Um produto saudável atrai sempre novos habitantes.
-                    </p>
+                <div class="flex flex-col lg:flex-row items-center justify-center w-full min-h-screen lg:h-full animate-fadeIn px-6 lg:px-[8vh] py-8 lg:py-0 gap-8 lg:gap-[6vh]">
                     
-                    <div class="relative w-80 h-80 lg:w-[55vh] lg:h-[55vh] mx-auto z-10 mb-10 lg:mb-[6vh]">
-                        <div class="absolute inset-0 bg-amber-500/40 rounded-full blur-2xl lg:blur-[12vh]"></div>
-                        <img src="${imgBase}roup%C3%A3o.png" alt="Gato de Roupão" class="w-full h-full object-contain drop-shadow-2xl lg:drop-shadow-[0_4vh_6vh_rgba(0,0,0,0.6)] relative z-10 animate-breathe origin-center scale-110 lg:scale-[1.15]" />
+                    <!-- Lado Esquerdo: Texto -->
+                    <div class="flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:w-[55%] z-20 order-2 lg:order-1">
+                        <h1 class="text-4xl lg:text-[9.5vh] font-bold text-white mb-6 lg:mb-[5vh] font-serif drop-shadow-2xl leading-tight">Alta Médica Total</h1>
+                        
+                        <p class="text-lg lg:text-[3.5vh] text-[#e6d5a1] mb-6 lg:mb-[4vh] font-serif max-w-2xl lg:max-w-none leading-relaxed">
+                            O Jorginho está 100% curado. E o segredo dessa saúde é a excelência do time de Produto e CX.
+                        </p>
+                        
+                        <p class="text-lg lg:text-[3.5vh] text-[#e6d5a1] mb-8 lg:mb-[8vh] font-serif max-w-2xl lg:max-w-none leading-relaxed">
+                            Por trás de um produto que atrai novos membros todos os dias, existe sempre um time obcecado por entregar o extraordinário.
+                        </p>
+                        
+                        <button onclick="window.reboot()" class="animate-pulse text-[#e6d5a1] text-lg lg:text-[3vh] font-bold tracking-widest font-mono uppercase bg-[#022c22]/50 hover:bg-[#022c22]/80 transition-colors px-8 py-3 lg:px-[6vh] lg:py-[2vh] rounded-full border border-[#e6d5a1]/20 cursor-pointer shadow-xl">
+                            [ Nova Avaliação ]
+                        </button>
+                    </div>
+
+                    <!-- Lado Direito: Gatinho Gigante -->
+                    <div class="relative w-80 h-80 lg:w-[45%] lg:h-[80vh] flex items-center justify-center z-10 order-1 lg:order-2">
+                        <!-- Fundo brilhante ovalado atrás do gato -->
+                        <div class="absolute inset-0 bg-amber-500/40 rounded-full blur-3xl lg:blur-[15vh] scale-75 lg:scale-90"></div>
+                        <img src="${imgBase}roup%C3%A3o.png" alt="Gato de Roupão" class="w-full h-full object-contain drop-shadow-2xl lg:drop-shadow-[0_5vh_8vh_rgba(0,0,0,0.7)] relative z-10 animate-breathe origin-center scale-110 lg:scale-125" />
                     </div>
                     
-                    <div class="animate-pulse text-[#e6d5a1] text-lg lg:text-[3vh] font-bold tracking-widest font-mono uppercase bg-[#022c22]/50 px-8 py-3 lg:px-[6vh] lg:py-[1.5vh] rounded-full border border-[#e6d5a1]/20">
-                        [ Nova Avaliação ]
-                    </div>
                 </div>`;
                 return;
             }
@@ -448,10 +460,8 @@
                             <span class="text-blue-200 text-xs lg:text-[1.4vh] font-serif italic">Clínica AUVP</span>
                         </div>
                         
-                        <div class="p-6 lg:p-[3vh] flex-grow flex flex-col relative bg-[linear-gradient(transparent_95%,_#e5e7eb_95%)] bg-[length:100%_3rem] lg:bg-[length:100%_5vh] overflow-y-auto hide-scrollbar min-h-[200px] lg:min-h-0">
-                            <div class="text-blue-900 font-serif text-5xl lg:text-[6vh] font-bold opacity-10 absolute top-4 lg:top-[2vh] left-4 lg:left-[3vh] pointer-events-none">Rx</div>
-                            
-                            <p class="font-handwriting text-2xl lg:text-[3.5vh] leading-[3rem] lg:leading-[5vh] mt-4 lg:mt-[3vh] z-10 px-2 lg:px-[2vh] ${!isDisabled ? 'animate-write' : 'text-blue-800'}" ${!isDisabled ? `style="animation-delay: ${0.2 + (i * 0.15)}s;"` : ''}>
+                        <div class="px-4 lg:px-[3vh] pt-0 pb-6 lg:pb-[3vh] flex-grow flex flex-col relative bg-[linear-gradient(transparent_95%,_#e5e7eb_95%)] bg-[length:100%_3rem] lg:bg-[length:100%_5vh] overflow-y-auto hide-scrollbar min-h-[200px] lg:min-h-0">
+                            <p class="font-handwriting text-2xl lg:text-[3.5vh] leading-[3rem] lg:leading-[5vh] mt-[3rem] lg:mt-[5vh] z-10 px-2 lg:px-[2vh] ${!isDisabled ? 'animate-write' : 'text-blue-800'}" ${!isDisabled ? `style="animation-delay: ${0.2 + (i * 0.15)}s;"` : ''}>
                                 ${opt.text}
                             </p>
                             
